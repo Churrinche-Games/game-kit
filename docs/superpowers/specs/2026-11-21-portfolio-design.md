@@ -86,22 +86,47 @@ Same as Bichoku (`~/src/sudoku`): **Vite + React + TypeScript + Tailwind v4, Vit
 - One collection app: one test and one listing, but weaker store discovery and no per-game signal. Rejected in favor of one app per game.
 - Organization developer account: no closed test, but needs a legal business and a D-U-N-S number. Rejected for now.
 
-## Repo
+## Repos and code sharing
 
-One repo (proposal: `~/src/argentine-games`, working name until the brand is chosen) holding every game plus a shared package, so shared code isn't copied between repos. This is a deliberate exception to the usual one-repo-per-project rule.
+**One repo per game, plus one kit repo.** Juan ruled out a single repo for everything.
 
 ```
-apps/
-  bichoku/            moved in from ~/src/sudoku (how: left to the plan)
-  <game>/             one Vite app + one Capacitor Android project each
-packages/
-  kit/                shared pieces (below)
-docs/superpowers/specs/
+~/src/game-kit/       the shared kit (below) + this portfolio design doc: home base
+~/src/sudoku/         Bichoku (stays where it is)
+~/src/<game>/         each new game: Vite app + its Capacitor Android project
 ```
 
-Harness as in the other projects: `CLAUDE.md`, `.claude/settings.json` allowlist, `.gitignore`, `.nvmrc` = 26, oxlint config, TDD, feature folders with colocated tests, pure logic in `.ts` outside components, local git only.
+What gets shared, and how:
 
-## Shared kit (`packages/kit`)
+| What | How | Why |
+|---|---|---|
+| **Kit code** (changes often; the More games list changes with every launch) | Kit repo installed into each game as a **version-pinned package** | One copy; each game stays on the version it was released with and upgrades on purpose. |
+| **Setup files** (Vite, tsconfig, Tailwind, oxlint, CLAUDE.md, `.claude/`, Capacitor config; ~100 lines) | **Copied** from the most recent game when starting a new one | Written once per game, rarely changed; copying is cheaper than a tool. |
+| **Game logic** | Not shared | Each game's rules are its own. |
+
+**How the kit is consumed** (verified with a throwaway spike on 2026-11-21):
+
+- Each game's `package.json` has `"@ag/kit": "git+file:///Users/juansturla/src/game-kit#v0.3.0"`, a git dependency on a **tag**, working with local-only git. npm copies the kit into `node_modules` (no symlink), so a game is frozen at its tag. Upgrading is changing the tag and running `npm install`.
+- The kit ships **TypeScript source** with no build step: `package.json` `exports` point at `src/*.ts`. The game's `tsc` type-checks it and Vite bundles it. This worked in the spike with Vite 8 and TypeScript 7.
+- Each game's CSS adds `@source` pointing at the kit so Tailwind picks up the kit components' classes.
+- Kit releases follow semver tags (`vX.Y.Z`); breaking changes bump the major.
+- While developing kit and game together, `npm link` (or a temporary `file:` path) skips the tag-and-reinstall loop; the committed dependency is always a tag.
+- When the repos get a remote, the URL becomes the GitHub one (one line per game). Publishing to an npm registry (npmjs or GitHub Packages) is an option then, not needed now.
+- The `@ag` scope is a working name; it follows the brand once chosen.
+
+Harness in every repo as in the other projects: `CLAUDE.md`, `.claude/settings.json` allowlist, `.gitignore`, `.nvmrc` = 26, oxlint config, TDD, feature folders with colocated tests, pure logic in `.ts` outside components, local git only.
+
+### Approaches considered (code sharing)
+
+| Approach | Trade-off | Verdict |
+|---|---|---|
+| One repo for everything (monorepo) | Easiest sharing, but every game tied into one repo. | Rejected by Juan |
+| Copy-paste everything | Simplest, but every kit fix or new game means editing N repos by hand, and the copies drift. | Kept only for setup files |
+| Git submodule | Pins an exact version, but clones need extra flags and edits inside it are error-prone. | Rejected |
+| Git subtree | Code lives inside each game, but updates come with merge noise and sending fixes back is awkward. | Rejected |
+| Kit repo as a versioned git package | One copy, versions pinned per game; costs a tag-and-reinstall per kit change. | **Chosen** |
+
+## Shared kit (`~/src/game-kit`)
 
 Built once, used by every game:
 
@@ -142,12 +167,11 @@ The order after #2 is not fixed; quick releases (stacker, bondi) can slot in bet
 5. Privacy policy page (required by Play even when no data is collected), hosted on a static page under the brand.
 6. Content rating questionnaire, target audience, Data safety form (no data collected).
 7. Closed test with the standing tester group for 14 days; collect their feedback.
-8. Production release; add the game to every other game's More games list in their next update.
+8. Production release; add the game to the kit's More games list, tag a new kit version, and roll it into the other games with their next update.
 
 ## Left to the builder
 
-- How Bichoku moves into the monorepo (git history, keeping `~/src/sudoku` working in the meantime).
-- Workspace tooling (npm workspaces is the default).
+- Where the kit's More games list lives inside the kit, and how a game marks itself as "current".
 - The exact rating-prompt trigger and the feedback channel (email vs form).
 - Whether the stacker needs the physics library or simple math is enough.
 
@@ -155,4 +179,5 @@ The order after #2 is not fixed; quick releases (stacker, bondi) can slot in bet
 
 - **Language: Spanish and English.** Every game's interface ships in both: rioplatense Spanish (voseo) and English, following the device language, with a switch in settings. Store listings in both (es-419 and en-US). Bichoku needs a Spanish translation before its release. *(Device-language default and the switch are Claude's call.)*
 - **Target audience: 13 and up** in Play Console, to stay outside the Families policy. The games stay family-friendly in content anyway.
-- **Brand / developer name: still to be decided,** probably something personal. It must be settled before the first upload, because it sets the permanent package prefix `com.<brand>`. Until then the repo keeps the working name `argentine-games`.
+- **Brand / developer name: still to be decided,** probably something personal. It must be settled before the first upload, because it sets the permanent package prefix `com.<brand>`. Until then the kit's package scope keeps the working name `@ag`.
+- **Code sharing: one repo per game plus a kit repo** consumed as a version-pinned package; setup files copied (see Repos and code sharing).
