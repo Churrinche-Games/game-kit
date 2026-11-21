@@ -7,7 +7,7 @@ The shared kit for a portfolio of small, free, Argentine-themed Android games (e
 ## Repo
 
 - Local git only, no remote. Pushing anywhere happens only when Juan says so.
-- Games install this repo as a git dependency pinned to a tag: `"@ag/kit": "git+file:///Users/juansturla/src/game-kit#vX.Y.Z"`. Every release is a semver tag; a breaking change bumps the major. Never move or delete a tag a game may depend on.
+- Games install this repo as a git dependency pinned to a tag: `"@electrochicken/kit": "git+file:///Users/juansturla/src/game-kit#vX.Y.Z"`. Every release is a semver tag; a breaking change bumps the major. Never move or delete a tag a game may depend on.
 - The kit ships TypeScript source (no build step): `package.json` `exports` point at `src/**/*.ts(x)`.
 - Games: `~/src/sudoku` (Bichoku); each new game in `~/src/<game>`.
 

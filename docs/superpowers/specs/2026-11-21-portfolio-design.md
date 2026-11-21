@@ -48,7 +48,7 @@ Income is welcome but not the goal. Expected traffic is unknown and assumed to b
 - **Developer account: personal** (decided: no existing developer account, no registered company). US$25 one-time, identity verification.
 - **Closed test before each launch:** personal accounts created after 2023-11-13 need ≥12 testers opted in continuously for 14 days on the *closed* track (internal testing doesn't count) before production. We keep one standing group of testers (friends, family, coworkers) and reuse it for every game; they are also the first feedback group. Overlap: test the next game while the current one is in review.
 - **Developer name:** the public brand the portfolio appears under. It can be changed later in Play Console (Settings → Developer account → Account details), but should be settled before the first public launch.
-- **Package names are permanent:** `com.<brand>.<game>`. Choose the brand prefix before the first upload.
+- **Package names are permanent:** `com.electrochicken.<game>`.
 
 ## Art and sound
 
@@ -106,13 +106,12 @@ What gets shared, and how:
 
 **How the kit is consumed** (verified with a throwaway spike on 2026-11-21):
 
-- Each game's `package.json` has `"@ag/kit": "git+file:///Users/juansturla/src/game-kit#v0.3.0"`, a git dependency on a **tag**, working with local-only git. npm copies the kit into `node_modules` (no symlink), so a game is frozen at its tag. Upgrading is changing the tag and running `npm install`.
+- Each game's `package.json` has `"@electrochicken/kit": "git+file:///Users/juansturla/src/game-kit#v0.3.0"`, a git dependency on a **tag**, working with local-only git. npm copies the kit into `node_modules` (no symlink), so a game is frozen at its tag. Upgrading is changing the tag and running `npm install`.
 - The kit ships **TypeScript source** with no build step: `package.json` `exports` point at `src/*.ts`. The game's `tsc` type-checks it and Vite bundles it. This worked in the spike with Vite 8 and TypeScript 7.
 - Each game's CSS adds `@source` pointing at the kit so Tailwind picks up the kit components' classes.
 - Kit releases follow semver tags (`vX.Y.Z`); breaking changes bump the major.
 - While developing kit and game together, `npm link` (or a temporary `file:` path) skips the tag-and-reinstall loop; the committed dependency is always a tag.
 - When the repos get a remote, the URL becomes the GitHub one (one line per game). Publishing to an npm registry (npmjs or GitHub Packages) is an option then, not needed now.
-- The `@ag` scope is a working name; it follows the brand once chosen.
 
 Harness in every repo as in the other projects: `CLAUDE.md`, `.claude/settings.json` allowlist, `.gitignore`, `.nvmrc` = 26, oxlint config, TDD, feature folders with colocated tests, pure logic in `.ts` outside components, local git only.
 
@@ -179,5 +178,5 @@ The order after #2 is not fixed; quick releases (stacker, bondi) can slot in bet
 
 - **Language: Spanish and English.** Every game's interface ships in both: rioplatense Spanish (voseo) and English, following the device language, with a switch in settings. Store listings in both (es-419 and en-US). Bichoku needs a Spanish translation before its release. *(Device-language default and the switch are Claude's call.)*
 - **Target audience: 13 and up** in Play Console, to stay outside the Families policy. The games stay family-friendly in content anyway.
-- **Brand / developer name: still to be decided,** probably something personal. It must be settled before the first upload, because it sets the permanent package prefix `com.<brand>`. Until then the kit's package scope keeps the working name `@ag`.
+- **Brand / developer name: Electro Chicken** (Juan and his wife's name for themselves). Play developer name "Electro Chicken"; app IDs `com.electrochicken.<game>` (permanent); kit package `@electrochicken/kit`. No game, Play developer or trademark use of the name found on 2026-11-21. `electrochicken.com` is taken (parked since 2020); `electrochicken.com.ar` was free, to be registered for the privacy policy and games page.
 - **Code sharing: one repo per game plus a kit repo** consumed as a version-pinned package; setup files copied (see Repos and code sharing).
