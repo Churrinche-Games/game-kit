@@ -1,0 +1,12 @@
+node_modules
+dist
+*.log
+*.local
+.DS_Store
+
+# Claude Code personal overrides
+.claude/settings.local.json
+CLAUDE.local.md
+
+# Superpowers plan workspaces (scratch)
+.superpowers/
