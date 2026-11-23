@@ -56,7 +56,7 @@ No game, studio or app using the name was found on 2026-11-22 (web search only).
 
 - **Every repo is public** under the `churrinche-games` GitHub org: the kit and each game.
 - **Each game links to its GitHub repo** from its About screen ("Source code on GitHub").
-- **Licenses** *(proposed, confirm before the first public push)*:
+- **Licenses:**
   - Code: **MIT**.
   - Art, sound and music: **CC BY-NC 4.0** (credit required, no commercial use).
   - The Churrinche Games name and logo: not licensed; forks must rename.
@@ -243,11 +243,11 @@ The order after #2 is not fixed; quick releases can slot in between bigger ones.
 - **2026-11-22 Art:** banknote-engraving style or a pixel art version of it (choice pending).
 - **2026-11-22 Brand:** Churrinche Games (replaces Electro Chicken).
 - **2026-11-22 Skills:** every project includes the vetted skills.
+- **2026-11-23 Licenses:** MIT for code, CC BY-NC 4.0 for art and sound, name and logo not licensed.
 
 ## Still open
 
 - Art direction: engraving or pixel art (next step, with a visual comparison).
-- Licenses (proposal above).
 - GitHub org created under the brand (recommended over a personal account).
 - Payments profile and the Play tip jar (later).
 - Feedback email address.
