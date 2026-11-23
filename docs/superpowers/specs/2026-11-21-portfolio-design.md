@@ -60,7 +60,8 @@ No game, studio or app using the name was found on 2026-11-22 (web search only).
   - Code: **MIT**.
   - Art, sound and music: **CC BY-NC 4.0** (credit required, no commercial use).
   - The Churrinche Games name and logo: not licensed; forks must rename.
-- Before the first push: switch commit email to the GitHub noreply address in every repo, and check history for anything private.
+- Commits are authored by Juan's personal GitHub account, so the work shows as Juan's own contributions. Which email the commits use (personal or GitHub's noreply alias, both link to the same profile) is Juan's choice.
+- Before the first push: check the history for anything private.
 
 ## Donations
 
