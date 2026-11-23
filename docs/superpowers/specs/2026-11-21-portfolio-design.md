@@ -1,141 +1,197 @@
-# Argentine games portfolio: design
+# Churrinche Games portfolio: design
 
-Date: 2026-11-21
+Date: 2026-11-21 (rewritten 2026-11-22: Godot, open source, donations, new brand)
 
 This is the base document for every game in the portfolio. Each game gets its own design doc later; this one holds what they all share.
 
 ## Intent
 
-A portfolio of small, free, Argentine-themed mobile games, each published as its own Android app on Google Play. The purpose is to:
+A portfolio of small, free, open-source, Argentine-themed mobile games, each published as its own Android app on Google Play (and on itch.io). The purpose is to:
 
-- have a public portfolio of finished work,
+- have a public portfolio of finished work, code included,
 - start building an audience,
 - get feedback from real players on small games before attempting anything bigger.
 
-Income is welcome but not the goal. Expected traffic is unknown and assumed to be low at first.
+Income is welcome but not the goal; what there is comes from **donations**. Expected traffic is unknown and assumed to be low at first.
+
+## Brand: Churrinche Games
+
+The churrinche is a tiny bright-red bird of the litoral (the vermilion flycatcher), and also a factura. Small, sweet games from Rosario.
+
+| Thing | Value |
+|---|---|
+| Play developer name | Churrinche Games |
+| GitHub organization | `churrinche-games` (free on 2026-11-22; `churrinche` is a taken personal account) |
+| itch.io | `churrinche.itch.io` (free on 2026-11-22) |
+| Domain | `churrinchegames.com` was free; start with GitHub Pages (`churrinche-games.github.io`) and buy the domain only if needed. `churrinche.com` and `.com.ar` are taken. |
+| App IDs (permanent) | `com.churrinche.<game>` |
+| Kit addon | `churrinche_kit` |
+
+No game, studio or app using the name was found on 2026-11-22 (web search only). **Before announcing:** search the INPI register for "churrinche".
 
 ## Goals
 
 - Ship small games often, each one complete and polished on its own.
-- Every game helps the others get found (cross-promotion inside the games).
-- Collect feedback cheaply: Play reviews, an in-game feedback link, Play Console install and retention stats.
-- Reuse as much as possible between games: stack, shared pieces, release process.
+- Every game helps the others get found (a More games screen inside each game).
+- Collect feedback cheaply: Play reviews, an in-game feedback link, GitHub issues, Play Console stats.
+- Reuse as much as possible between games: engine, kit, skills, release process.
+- Every repo is public and readable as a portfolio piece.
 
 ## Non-goals (for now)
 
 - Ads.
 - Accounts, logins, online leaderboards, multiplayer.
-- Analytics or tracking SDKs. Play Console's own stats are enough to start, and this keeps the Data safety form trivial. *(Claude's call.)*
-- iOS. The stack doesn't rule it out later.
+- Analytics or tracking SDKs. Play Console's own stats are enough, and this keeps the Data safety form trivial.
+- iOS. Godot doesn't rule it out later.
 
 ## Anti-goals (failure even if it "works")
 
 - Games that feel like a copy of a specific existing game (its name, art, look or levels). We build in a genre with our own Argentine theme.
-- Monetization that annoys early players or costs reviews.
-- Anything that leaks the developer's home address or personal data without a deliberate decision.
-- Shared code copied between games and drifting apart.
+- Monetization that annoys players or costs reviews.
+- Anything that leaks the developer's home address or personal data without a deliberate decision (commit emails included).
+- Shared code edited inside a game and drifting from the kit.
+- Art that copies real banknotes.
 
-## Monetization
+## Open source
 
-- **Launch: completely free, no ads, no purchases.**
-- **Later, once a game has players:** a "Support the developer" tip jar through **Google Play Billing** (in-app consumables, 2–3 amounts). Tips must go through Play Billing; linking out to Cafecito/Mercado Pago from inside the app risks breaking Play's payments policy.
-- Before turning on any purchase: check what Play Console will show publicly. An account that sells anything is a "trader" under EU rules, and its address and contact details may be displayed on the listing.
-- **Ads** come back up only if one game clearly takes off.
+- **Every repo is public** under the `churrinche-games` GitHub org: the kit and each game.
+- **Each game links to its GitHub repo** from its About screen ("Source code on GitHub").
+- **Licenses** *(proposed, confirm before the first public push)*:
+  - Code: **MIT**.
+  - Art, sound and music: **CC BY-NC 4.0** (credit required, no commercial use).
+  - The Churrinche Games name and logo: not licensed; forks must rename.
+- Before the first push: switch commit email to the GitHub noreply address in every repo, and check history for anything private.
+
+## Donations
+
+Donations are the only income. Stores have different rules, so each build gets its own Support screen:
+
+| Channel | How | Notes |
+|---|---|---|
+| **GitHub** | `FUNDING.yml` in the org's `.github` repo, so every repo shows a Sponsor button: GitHub Sponsors (supports Argentina, no fee from personal sponsors), Ko-fi and Cafecito (custom URL); PayPal optional. | Set up once for all repos. |
+| **itch.io** | Each game published free with pay-what-you-want (web build + APK). Revenue share is ours to choose; payout via PayPal or Payoneer. | The itch build's Support screen can link to all the donation pages. |
+| **Google Play build** | **No donation links or donation wording.** Play's payments policy forbids steering to outside payments. The About screen links to the GitHub repo only (informational). | The repo page has a Sponsor button; that's a gray area, accepted as low risk. Re-check the policy before each launch. |
+| **Play tip jar (later)** | Play Billing consumables, 2–3 amounts, once a game has players. | Needs the payments profile sorted (Argentina; profile country can't change) and the EU "trader" status checked: selling anything can make the address public on the listing. |
+
+A build flag (`store = play | itch`) decides what the Support screen shows.
 
 ## Distribution
 
-- **Each game is its own Play app,** with its own listing, search traffic and stats, so we can see which games resonate.
-- **Developer account: personal** (decided: no existing developer account, no registered company). US$25 one-time, identity verification.
-- **Closed test before each launch:** personal accounts created after 2023-11-13 need ≥12 testers opted in continuously for 14 days on the *closed* track (internal testing doesn't count) before production. We keep one standing group of testers (friends, family, coworkers) and reuse it for every game; they are also the first feedback group. Overlap: test the next game while the current one is in review.
-- **Developer name:** the public brand the portfolio appears under. It can be changed later in Play Console (Settings → Developer account → Account details), but should be settled before the first public launch.
-- **Package names are permanent:** `com.electrochicken.<game>`.
+- **Each game is its own Play app,** with its own listing and stats, so we can see which games resonate. Also on itch.io.
+- **Developer account: personal** (no existing account, no company). US$25, identity verification.
+- **Closed test before each launch:** personal accounts created after 2023-11-13 need ≥12 testers opted in for 14 continuous days on the closed track before production. One standing tester group (friends, family, coworkers), reused for every game; they're also the first feedback group. Test the next game while the current one is in review.
 
-## Art and sound
+## Art direction
 
-Everything is made in code, so there are no external asset files, licenses or AI-image questions. No Google Play rule was found requiring disclosure for fixed game assets (Google's AI-Generated Content policy covers apps that *generate* content for users). Re-check the Play policy page before each launch.
+All art is made by Claude in code; no AI image generators and no external asset files beyond CC0 fallbacks.
 
-- **Art:** flat SVG drawn in code, as in Bichoku's `AnimalIcon.tsx`. Never imitate existing characters or brands.
-- **Sound effects:** synthesized with Web Audio at runtime, sfxr-style (blips, pops, chimes).
-- **Music:** short chiptune loops written as note sequences played by a small built-in synth. Folk rhythms (chacarera, zamba) are fair game as rhythms and as traditional melodies; modern recordings and arrangements are not.
-- **Fallback:** CC0 packs (Kenney, CC0 items on OpenGameArt/Freesound) if a game needs something code can't do well.
-- Every game has a mute toggle for music and effects, saved locally.
+Two candidate directions (choose one before the first game's art; a visual comparison comes first):
 
-## Stack
+1. **Banknote engraving:** the style of the Argentine peso series with native animals: fine line work, cross-hatching, guilloche patterns, a cream "paper" background, a limited palette per game. Drawn as SVG generated by script (Godot imports SVG).
+2. **Pixel art version of that style:** the same animals and palettes as low-resolution pixel art, written as text grids and turned into PNGs by a script; nearest-neighbor filtering, integer scaling.
 
-Same as Bichoku (`~/src/sudoku`): **Vite + React + TypeScript + Tailwind v4, Vitest, oxlint, Node 26**, wrapped as an Android app with **Capacitor** (game files bundled in the app, works offline).
+Rules either way:
 
-- Translations: a small typed dictionary per game plus shared kit strings, no i18n library. *(Claude's call.)*
-- Grid and puzzle games (sudoku, 2048-style, match-3, merge-2, block puzzle, sliding puzzle): React, with CSS transforms for movement.
-- Physics games (peg shooter, pinball, maybe the stacker): a canvas plus a physics library (matter-js or Planck.js), still TypeScript inside the same shell.
-- Native features through Capacitor plugins: Play Billing (tip jar, later), Play In-App Review, haptics.
-- Building the Android app needs Android Studio and the Android SDK installed locally.
+- **Inspiration only.** Never reproduce a real bill, its layout, denominations, portraits, BCRA marks or security features.
+- Source files (scripts, grids, SVG) are committed; generated files are rebuilt by a script, so the art is reproducible and open.
+- Never imitate existing characters or brands.
+- The churrinche itself is the logo.
+
+## Sound
+
+- **Effects:** synthesized sfxr-style by a script into `.wav` files (committed with their generator), or with `AudioStreamGenerator` at runtime when that's simpler.
+- **Music:** short chiptune loops written as note sequences and rendered by the same script. Traditional rhythms (chacarera, zamba) and traditional melodies are fair game; modern recordings and arrangements are not.
+- **Fallback:** CC0 packs (Kenney, CC0 items on OpenGameArt/Freesound), credited anyway.
+- Every game has separate mute toggles for music and effects, saved locally.
+
+## Stack: Godot 4
+
+**Godot 4.7** (installed: 4.7.2), **GDScript**, Android export as AAB, plus a web export for itch.io. Godot is also Argentine-born, which fits the brand.
+
+- **Tests:** GUT (pinned, vendored in `addons/gut`), run headless: `godot --headless -s addons/gut/gut_cmdln.gd -gexit`. Pure logic lives in plain scripts (`RefCounted`, no nodes) so it's easy to test. **TDD is the rule.** The exit code must reflect failures (see the `godot-gdscript-headless-testing` skill).
+- **Lint and format:** gdtoolkit (`gdlint`, `gdformat`), pinned.
+- **Build check:** a headless import plus an export of each preset must succeed with no script errors.
+- **Translations:** CSV files + `tr()` + `TranslationServer`; rioplatense Spanish and English, following the device language, with a switch in settings.
+- **Mobile basics, in the kit:** Android back button (`NOTIFICATION_WM_GO_BACK_REQUEST`), pause and save on background (`NOTIFICATION_APPLICATION_PAUSED`), safe areas (`DisplayServer.get_display_safe_area()`), layouts that work at 360 px wide.
+- **Toolchain to install** (needs Juan's OK): JDK 17, Android SDK platform and build-tools 35+, Godot export templates for 4.7.2, butler for itch.io uploads, gdtoolkit.
+- Signing keystores and their passwords never enter any repo.
 
 ### Approaches considered (engine)
 
 | Approach | Trade-off | Verdict |
 |---|---|---|
-| Web stack + Capacitor | Reuses Bichoku, TDD and the shared pieces; Claude works best fully in code. Heavy sprite or physics action is a stretch for plain React. | **Chosen** |
-| Same + Phaser/PixiJS/physics library per game | Covers action and physics games without leaving the stack. | **Chosen as an add-on** for the games that need it |
-| Godot | Real engine with good physics, but a new language, editor-centric, a weaker testing story, nothing shared with Bichoku. | Rejected unless most games turn out action-heavy |
-| Unity | Too heavy for small games; unstable licensing history. | Rejected |
-
-### Approaches considered (monetization and distribution)
-
-- Ads from day one: earns almost nothing at low traffic, costs reviews, more compliance work. Rejected for launch.
-- Donations via external links: payments policy risk. Rejected in favor of a Play Billing tip jar, later.
-- One collection app: one test and one listing, but weaker store discovery and no per-game signal. Rejected in favor of one app per game.
-- Organization developer account: no closed test, but needs a legal business and a D-U-N-S number. Rejected for now.
+| Godot 4 | Real engine with physics, animation and a web export; open source like us; Argentine-born. New language and a weaker testing story, solved with GUT and logic kept out of nodes. | **Chosen by Juan** |
+| Web stack + Capacitor (Bichoku's stack) | Reuses Bichoku as is, but physics games are a stretch. | Rejected; Bichoku gets ported to Godot |
+| Unity | Too heavy; licensing history. | Rejected |
 
 ## Repos and code sharing
 
 **One repo per game, plus one kit repo.** Juan ruled out a single repo for everything.
 
 ```
-~/src/game-kit/       the shared kit (below) + this portfolio design doc: home base
-~/src/sudoku/         Bichoku (stays where it is)
-~/src/<game>/         each new game: Vite app + its Capacitor Android project
+~/src/game-kit/       the kit (Godot addon), shared skills, this design doc: home base
+                      → github.com/churrinche-games/kit
+~/src/<game>/         each game: a Godot project → github.com/churrinche-games/<game>
+~/src/sudoku/         Bichoku's current web version; the Godot port is a new repo
 ```
 
 What gets shared, and how:
 
 | What | How | Why |
 |---|---|---|
-| **Kit code** (changes often; the More games list changes with every launch) | Kit repo installed into each game as a **version-pinned package** | One copy; each game stays on the version it was released with and upgrades on purpose. |
-| **Setup files** (Vite, tsconfig, Tailwind, oxlint, CLAUDE.md, `.claude/`, Capacitor config; ~100 lines) | **Copied** from the most recent game when starting a new one | Written once per game, rarely changed; copying is cheaper than a tool. |
-| **Game logic** | Not shared | Each game's rules are its own. |
+| **Kit code** (`addons/churrinche_kit`) | **Vendored copy at a kit tag**: a sync script copies the addon from a kit tag into the game and records the tag in `addons/churrinche_kit/VERSION`. Committed in the game repo. | Anyone can clone a game and open it in Godot, with no submodules or package manager. Each game stays on the kit version it shipped with and upgrades on purpose. |
+| **Claude skills** (`.claude/skills/`) | Copied by the same sync script. | Every project has the same skills; see below. |
+| **Setup files** (`project.godot` basics, export presets without secrets, CLAUDE.md, `.claude/settings.json`, `.gitignore`, lint config) | Created by the `new-game` skill from templates in the kit. | Written once per game. |
+| **Game logic** | Not shared. | Each game's rules are its own. |
 
-**How the kit is consumed** (verified with a throwaway spike on 2026-11-21):
+Rules:
 
-- Each game's `package.json` has `"@electrochicken/kit": "git+file:///Users/juansturla/src/game-kit#v0.3.0"`, a git dependency on a **tag**, working with local-only git. npm copies the kit into `node_modules` (no symlink), so a game is frozen at its tag. Upgrading is changing the tag and running `npm install`.
-- The kit ships **TypeScript source** with no build step: `package.json` `exports` point at `src/*.ts`. The game's `tsc` type-checks it and Vite bundles it. This worked in the spike with Vite 8 and TypeScript 7.
-- Each game's CSS adds `@source` pointing at the kit so Tailwind picks up the kit components' classes.
-- Kit releases follow semver tags (`vX.Y.Z`); breaking changes bump the major.
-- While developing kit and game together, `npm link` (or a temporary `file:` path) skips the tag-and-reinstall loop; the committed dependency is always a tag.
-- When the repos get a remote, the URL becomes the GitHub one (one line per game). Publishing to an npm registry (npmjs or GitHub Packages) is an option then, not needed now.
-
-Harness in every repo as in the other projects: `CLAUDE.md`, `.claude/settings.json` allowlist, `.gitignore`, `.nvmrc` = 26, oxlint config, TDD, feature folders with colocated tests, pure logic in `.ts` outside components, local git only.
+- **Never edit `addons/churrinche_kit` inside a game.** Fix it in the kit, tag a release, sync. A check in the sync script refuses to overwrite local changes.
+- Kit releases are semver tags (`vX.Y.Z`); breaking changes bump the major. Never move or delete a tag.
+- While developing kit and game together, the sync script can copy from the kit's working tree; the committed copy is always from a tag.
+- Later option: publish the kit on the Godot Asset Library. Not needed now.
 
 ### Approaches considered (code sharing)
 
 | Approach | Trade-off | Verdict |
 |---|---|---|
-| One repo for everything (monorepo) | Easiest sharing, but every game tied into one repo. | Rejected by Juan |
-| Copy-paste everything | Simplest, but every kit fix or new game means editing N repos by hand, and the copies drift. | Kept only for setup files |
-| Git submodule | Pins an exact version, but clones need extra flags and edits inside it are error-prone. | Rejected |
-| Git subtree | Code lives inside each game, but updates come with merge noise and sending fixes back is awkward. | Rejected |
-| Kit repo as a versioned git package | One copy, versions pinned per game; costs a tag-and-reinstall per kit change. | **Chosen** |
+| One repo for everything | Easiest sharing, but every game tied into one repo. | Rejected by Juan |
+| Git submodule in `addons/` | Pins an exact commit, but clones need `--recursive` (bad for open-source visitors) and edits inside are error-prone. | Rejected |
+| Godot Asset Library | Proper Godot install flow, but public review for every release; slow loop. | Later, maybe |
+| Hand copy-paste | Copies drift. | Rejected |
+| Vendored copy at a tag, by script | Self-contained repos, pinned versions, one command to upgrade. | **Chosen** |
 
-## Shared kit (`~/src/game-kit`)
+## Claude skills in every project
 
-Built once, used by every game:
+The kit holds the skills every project uses, in `.claude/skills/`, and the sync script copies them into each game.
 
-- **More games screen:** a static list of the portfolio's games, each linking to its Play listing. The current game is hidden; unreleased games are hidden.
-- **Feedback:** a "Send feedback" entry that opens an email (or a short form) with the game name and version filled in.
-- **Rating prompt:** Play In-App Review, asked once after a few wins or a good session, never after a loss, never on first launch.
-- **Sound:** the effects synth, the music sequencer, the mute settings.
-- **Storage:** guarded localStorage helpers (as in Bichoku's `storage.ts`).
-- **Theme:** shared tokens and dark mode, with each game picking its own palette.
-- **Tip jar (later):** Play Billing wrapper and a small "Support" screen.
+**Third-party, vendored at a pinned commit with their license files** (read in full and vetted on 2026-11-21: nothing unsafe, current for Godot 4.7):
+
+- From GodotPrompter (MIT): `gdscript-patterns`, `godot-testing`, `mobile-development`, `export-pipeline`, `localization`, `responsive-ui`, `audio-system`.
+- From awesome-gamedev-agent-skills (Apache-2.0): `godot-gdscript-headless-testing`, `puzzle`, `game-feel`.
+
+Not included: `addon-development` (editor plugins; our kit is runtime code), godot-mcp (the shell is enough for now), AI pixel-art generators, Unity skills.
+
+**Our own** (written with the writing-skills process):
+
+- `new-game`: creates `~/src/<game>` with the harness, the kit and the skills.
+- `game-art`: how to draw in the chosen art direction, with palettes and scripts. Written after the direction is chosen.
+- `release-game`: the release checklist below, Play and itch.io.
+
+`THIRD_PARTY.md` in the kit lists each vendored skill with its source, commit and license. Updating a skill is a deliberate kit release.
+
+## Shared kit (`churrinche_kit`)
+
+- **About screen:** game name and version, "Source code on GitHub" link, licenses and credits, Support entry (store-dependent, see Donations).
+- **More games screen:** a static list of the portfolio's games with their Play (or itch.io) links. The current game and unreleased games are hidden.
+- **Feedback:** opens an email with the game and version filled in ("Comentarios sobre X v…" / "Feedback on X v…"), plus a link to GitHub issues.
+- **Rating prompt:** Play In-App Review, asked once, after 3 wins and on the second session or later; never after a loss, never on first launch. Play build only.
+- **Sound:** effects player, music player, mute settings.
+- **Settings and storage:** a small versioned save file in `user://`, tolerant of old and broken saves.
+- **i18n:** shared strings (es/en) and the language switch.
+- **Theme:** a shared Godot `Theme` base and palette slots each game fills.
+- **Mobile:** back button, pause on background, safe areas.
+- **Tip jar (later):** Play Billing wrapper.
 
 ## Game catalog
 
@@ -143,40 +199,55 @@ Ordered by build sequence. Each game is a genre with our own Argentine theme.
 
 | # | Game | Mode | Notes |
 |---|---|---|---|
-| 1 | **Bichoku** (sudoku, Argentine animals) | levels by difficulty | Already built. First release proves the whole pipeline. |
+| 1 | **Bichoku** (sudoku, Argentine animals) | levels by difficulty | Port of the web version to Godot. Proves the whole pipeline: kit, art direction, Play, itch.io. |
 | 2 | 2048-style merge | endless | Small logic; tiles that grow (coins → bills, plain mate → fancy mate…). |
-| 3 | Match-3 | levels | Cascades and specials; harder logic. |
-| 4 | Merge-2 | endless + orders | Biggest of the grid games (board, orders, meta layer). |
-| 5 | Alfajor stacker | endless | One-tap; quickest build, good filler release. |
-| 6 | Bondi traffic (sliding-block puzzle) | levels | Levels generated and checked by code, like Bichoku's. |
-| 7 | Peg shooter | levels | Physics. |
-| 8 | Pinball | endless | Physics. |
+| 3 | Match-3 | levels | Cascades and specials. |
+| 4 | Merge-2 | endless + orders | Biggest of the grid games. |
+| 5 | Alfajor stacker | endless | One-tap; quick filler release. |
+| 6 | Bondi traffic (sliding-block puzzle) | levels | Levels generated and checked by code. |
+| 7 | Peg shooter | levels | Godot physics. |
+| 8 | Pinball | endless | Godot physics. |
 | later | Fileteado blocks (block placement) | endless | Candidate. |
 | later | Escoba solitaire | levels/endless | Card foundation for truco. |
-| later | Truco | vs computer | Needs a bluffing AI; its own project. A first attempt as a Wordle-like didn't make sense. |
+| later | Truco | vs computer | Needs a bluffing AI; its own project. |
 
-The order after #2 is not fixed; quick releases (stacker, bondi) can slot in between bigger ones.
+The order after #2 is not fixed; quick releases can slot in between bigger ones.
 
 ## Release process (per game)
 
 1. Game design doc in `docs/superpowers/specs/`.
-2. Build with TDD; `npm test && npm run lint && npm run build` pass.
-3. Capacitor Android build, signed AAB, Play App Signing.
-4. Store listing: name, short and long description, icon, screenshots, feature graphic. The art is drawn in code like the game.
-5. Privacy policy page (required by Play even when no data is collected), hosted on a static page under the brand.
-6. Content rating questionnaire, target audience, Data safety form (no data collected).
-7. Closed test with the standing tester group for 14 days; collect their feedback.
-8. Production release; add the game to the kit's More games list, tag a new kit version, and roll it into the other games with their next update.
+2. Build with TDD; tests, lint and the build check pass.
+3. Signed AAB (Play App Signing) and web/APK builds for itch.io.
+4. Store listings in es-419 and en-US: name, descriptions, icon, screenshots, feature graphic, all made in code like the game.
+5. Privacy policy (required by Play even with no data collected) on the GitHub Pages site.
+6. Content rating, target audience 13+, Data safety (no data collected).
+7. Closed test with the standing tester group for 14 days; collect feedback.
+8. Production on Play; publish on itch.io; make the repo public if it isn't yet.
+9. Add the game to the kit's More games list, tag a kit release, sync it into the other games with their next update.
 
 ## Left to the builder
 
-- Where the kit's More games list lives inside the kit, and how a game marks itself as "current".
-- The exact rating-prompt trigger and the feedback channel (email vs form).
-- Whether the stacker needs the physics library or simple math is enough.
+- Where the More games list lives in the kit and how a game marks itself as current.
+- Whether the feedback email is a dedicated address (needed before the first release; never Juan's personal address).
+- The exact sfx synth (script vs runtime) per sound.
 
-## Decided with Juan (2026-11-21)
+## Decided with Juan
 
-- **Language: Spanish and English.** Every game's interface ships in both: rioplatense Spanish (voseo) and English, following the device language, with a switch in settings. Store listings in both (es-419 and en-US). Bichoku needs a Spanish translation before its release. *(Device-language default and the switch are Claude's call.)*
-- **Target audience: 13 and up** in Play Console, to stay outside the Families policy. The games stay family-friendly in content anyway.
-- **Brand / developer name: Electro Chicken** (the nickname Juan and Juan's wife go by). Play developer name "Electro Chicken"; app IDs `com.electrochicken.<game>` (permanent); kit package `@electrochicken/kit`. No game, Play developer or trademark use of the name found on 2026-11-21. `electrochicken.com` is taken (parked since 2020); `electrochicken.com.ar` was free, to be registered for the privacy policy and games page.
-- **Code sharing: one repo per game plus a kit repo** consumed as a version-pinned package; setup files copied (see Repos and code sharing).
+- **2026-11-21 Language:** Spanish (rioplatense, voseo) and English in every game and listing.
+- **2026-11-21 Audience:** 13+ in Play Console, family-friendly content.
+- **2026-11-21 Code sharing:** one repo per game plus a kit repo.
+- **2026-11-22 Open source:** all repos public; each game links to its repo.
+- **2026-11-22 Monetization:** donations (see Donations).
+- **2026-11-22 Engine:** Godot for every game.
+- **2026-11-22 Art:** banknote-engraving style or a pixel art version of it (choice pending).
+- **2026-11-22 Brand:** Churrinche Games (replaces Electro Chicken).
+- **2026-11-22 Skills:** every project includes the vetted skills.
+
+## Still open
+
+- Art direction: engraving or pixel art (next step, with a visual comparison).
+- Licenses (proposal above).
+- GitHub org created under the brand (recommended over a personal account).
+- Payments profile and the Play tip jar (later).
+- Feedback email address.
+- INPI check for the name.
