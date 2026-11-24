@@ -20,6 +20,7 @@ The shared Godot addon, Claude skills and templates for Churrinche Games: a port
 ```sh
 tools/check.sh    # everything: import, GUT tests, shell tests, lint, format. Must pass before work is done.
 tools/vendor.sh   # re-copy third-party code from the pinned refs in tools/vendor.lock
+tools/new-game.sh <slug> "<Name>"   # create ~/src/<slug> from the newest kit tag (see the new-game skill)
 tools/sync-kit.sh [--force] <tag> ~/src/<game>   # vendor a kit tag into a game (refuses over local edits; does not commit)
 ```
 
@@ -42,8 +43,9 @@ addons/churrinche_kit/   the runtime addon games vendor
   save/                  SaveStore: versioned JSON save, migrations, broken saves moved aside
 addons/gut/              GUT, vendored at a pinned tag
 tests/                   GUT tests mirroring addons/churrinche_kit; tests/tools/ for shell tests
-.claude/skills/          vetted third-party skills (vendored) + our own; _licenses/
-tools/                   check.sh, vendor.sh + vendor.lock, sync-kit.sh, art/ (style reference)
+.claude/skills/          vetted third-party skills (vendored) + our own (OWN-SKILLS.txt); _licenses/
+templates/game/          the game template new-game.sh copies ({{NAME}}, {{SLUG}}, {{PACKAGE}}, {{KIT_TAG}}, {{DATE}})
+tools/                   check.sh, vendor.sh + vendor.lock, sync-kit.sh, new-game.sh, art/ (style reference)
 docs/superpowers/        specs/ and plans/
 THIRD_PARTY.md           every vendored item with source, ref and license
 LICENSE, LICENSE-ART.md  MIT for code; CC BY-NC 4.0 for art and sound; name and logo not licensed

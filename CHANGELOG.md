@@ -2,6 +2,11 @@
 
 All releases are semver tags (`vX.Y.Z`). A breaking change bumps the major.
 
+## 0.2.0 — 2026-11-24
+
+- `tools/new-game.sh` and `templates/game/`: create a game repo (`~/src/<slug>`) from the newest kit tag, with the harness, the kit, GUT, the skills, Android and Web export presets that leave tests and GUT out, and one local commit. The default Android package is `com.churrinche.<slug without hyphens>`.
+- The `new-game` skill, and `.claude/skills/OWN-SKILLS.txt` listing our own (not vendored) skills.
+
 ## 0.1.0 — 2026-11-24
 
 - The kit is a Godot 4.7 project with GUT 9.7.1, gdlint and gdformat; `tools/check.sh` runs everything.
