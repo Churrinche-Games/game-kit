@@ -1,0 +1,17 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(tools/check.sh*)",
+      "Bash(godot --headless *)",
+      "Bash(/Applications/Godot.app/Contents/MacOS/Godot --headless *)",
+      "Bash(gdlint *)",
+      "Bash(gdformat --check *)",
+      "Bash(git status*)",
+      "Bash(git diff*)",
+      "Bash(git log*)"
+    ]
+  },
+  "enabledPlugins": {
+    "ponytail@ponytail": true
+  }
+}

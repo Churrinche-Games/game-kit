@@ -1,0 +1,17 @@
+# Godot
+.godot/
+build/
+
+# Signing: keystores and their passwords never enter the repo
+*.keystore
+*.jks
+export_credentials.cfg
+
+.DS_Store
+
+# Claude Code personal overrides
+.claude/settings.local.json
+CLAUDE.local.md
+
+# Superpowers plan workspaces (scratch)
+.superpowers/

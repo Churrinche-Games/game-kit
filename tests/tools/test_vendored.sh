@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Every vendored skill is in the lock, every lock item exists, every lock ref is in THIRD_PARTY.md,
+# Every skill is either vendored (in the lock) or ours (in .claude/skills/OWN-SKILLS.txt); every vendored skill is in the lock, every lock item exists, every lock ref is in THIRD_PARTY.md,
 # and every skill has a SKILL.md.
 set -uo pipefail
 root="$(cd "$(dirname "$0")/../.." && pwd)"
@@ -13,7 +13,10 @@ shopt -s nullglob
 for dir in "$root"/.claude/skills/*/; do
   name="$(basename "$dir")"
   [ "$name" = "_licenses" ] && continue
-  echo "$lines" | awk '{print $4}' | grep -qx ".claude/skills/$name" || problem "skill $name is not in tools/vendor.lock"
+  in_lock=0 own=0
+  grep -qx ".claude/skills/$name" <<< "$(awk '{print $4}' <<< "$lines")" && in_lock=1
+  grep -qx "$name" "$root/.claude/skills/OWN-SKILLS.txt" 2> /dev/null && own=1
+  [ $((in_lock + own)) -eq 1 ] || problem "skill $name must be either in tools/vendor.lock or in .claude/skills/OWN-SKILLS.txt (exactly one)"
   [ -f "$dir/SKILL.md" ] || problem "skill $name has no SKILL.md"
 done
 
