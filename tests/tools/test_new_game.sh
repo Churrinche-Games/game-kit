@@ -30,10 +30,13 @@ check test_exports_exclude_tests_and_gut '[ "$(grep -c "^exclude_filter=.*addons
 check test_claude_md_links_spec 'grep -qE "docs/superpowers/specs/[0-9]{4}-[0-9]{2}-[0-9]{2}-mi-juego-design\.md" "$g/CLAUDE.md"'
 check test_harness_files '[ -f "$g/.claude/settings.json" ] && grep -q ponytail "$g/.claude/settings.json" && grep -qx ".superpowers/" "$g/.gitignore" && grep -qx "CLAUDE.local.md" "$g/.gitignore" && [ -f "$g/.superpowers/sdd/.gitignore" ] && [ -f "$g/LICENSE" ] && [ -f "$g/LICENSE-ART.md" ]'
 check test_secrets_ignored 'grep -qx "\*.keystore" "$g/.gitignore" && grep -qx "\*.jks" "$g/.gitignore"'
+check test_template_has_game_info 'grep -qxF "name=\"Mi Juego & Cía\"" "$g/game_info.cfg" && grep -qxF "repo_url=\"https://github.com/churrinche-games/mi-juego\"" "$g/game_info.cfg" && grep -qxF "email=\"\"" "$g/game_info.cfg"'
+check test_presets_have_store_features '[ "$(grep -c "^custom_features=\"play\"" "$g/export_presets.cfg")" = 1 ] && [ "$(grep -c "^custom_features=\"itch\"" "$g/export_presets.cfg")" = 1 ] && [ "$(grep -c "^include_filter=\"game_info.cfg\"" "$g/export_presets.cfg")" = 2 ]'
+check test_project_has_kit_strings_and_back 'grep -qF "res://addons/churrinche_kit/i18n/kit_strings.es.translation" "$g/project.godot" && grep -qxF "config/quit_on_go_back=false" "$g/project.godot"'
 GODOT="${GODOT:-/Applications/Godot.app/Contents/MacOS/Godot}"
 (cd "$g" && "$GODOT" --headless --export-pack Web "$work/web.pck" > "$work/out" 2>&1)
 strings "$work/web.pck" > "$work/web.txt" 2> /dev/null
-check test_export_leaves_out_tests_and_gut '[ -s "$work/web.pck" ] && grep -q "src/main/main.tscn" "$work/web.txt" && ! grep -qE "addons/gut|tests/test_smoke" "$work/web.txt"'
+check test_export_leaves_out_tests_and_gut '[ -s "$work/web.pck" ] && grep -q "src/main/main.tscn" "$work/web.txt" && grep -q "game_info.cfg" "$work/web.txt" && ! grep -qE "addons/gut|tests/test_smoke" "$work/web.txt"'
 check test_game_check_passes '(cd "$g" && bash tools/check.sh > "$work/check.out" 2>&1)'
 
 new_game --dir "$work/games/pkg" --package ar.example.pkg pkg "Pkg"

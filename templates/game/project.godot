@@ -8,6 +8,7 @@ config/name="{{NAME}}"
 config/version="0.1.0"
 run/main_scene="res://src/main/main.tscn"
 config/features=PackedStringArray("4.7", "Mobile")
+config/quit_on_go_back=false
 
 [display]
 
@@ -21,3 +22,8 @@ window/handheld/orientation=1
 
 renderer/rendering_method="mobile"
 textures/vram_compression/import_etc2_astc=true
+
+[internationalization]
+
+locale/translations=PackedStringArray("res://addons/churrinche_kit/i18n/kit_strings.es.translation", "res://addons/churrinche_kit/i18n/kit_strings.en.translation")
+locale/fallback="en"
