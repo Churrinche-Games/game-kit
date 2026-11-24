@@ -1,0 +1,4 @@
+# Third-party files copied into this repo. One line per item:
+# <github repo> <commit or tag> <path in that repo> <destination here>
+# Run tools/vendor.sh after editing. List every item in THIRD_PARTY.md.
+bitwes/Gut v9.7.1 addons/gut addons/gut

@@ -7,7 +7,9 @@
       "Bash(gdformat --check *)",
       "Bash(git status*)",
       "Bash(git diff*)",
-      "Bash(git log*)"
+      "Bash(git log*)",
+      "Bash(tools/check.sh*)",
+      "Bash(tools/vendor.sh*)"
     ]
   },
   "enabledPlugins": {
