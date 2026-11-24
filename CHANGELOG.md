@@ -2,6 +2,11 @@
 
 All releases are semver tags (`vX.Y.Z`). A breaking change bumps the major.
 
+## 0.3.2 — 2026-11-24
+
+- `KitSheet`: fixed an endless resize loop (a freeze, then a crash) when wrapped text re-measured at a slightly different width; placement now runs deferred, once per change.
+- `KitSheet.area_rect`: the panel stays inside it (games pass the device safe area).
+
 ## 0.3.1 — 2026-11-24
 
 - `KitTheme`: switches (CheckButton) keep a paper box when on; they used to take the dark pressed fill and hide their label.

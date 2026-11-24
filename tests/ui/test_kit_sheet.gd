@@ -78,3 +78,34 @@ func test_closed_emitted_once() -> void:
 	sheet.close()
 	sheet.close()
 	assert_signal_emit_count(sheet, "closed", 1)
+
+
+func test_short_wrapping_sheet_settles() -> void:
+	# A real case: themed (font 30), wrapping text a bit wider than the panel's text column.
+	for sentences in [2, 3, 4, 5, 6]:
+		var sheet := _sheet()
+		sheet.get_parent().theme = KitTheme.make(KitTheme.DEFAULTS)
+		var resizes := [0]
+		sheet.panel().resized.connect(func() -> void: resizes[0] += 1)
+		sheet.add_title("Title")
+		var text := ""
+		for i in sentences:
+			text += "Some fairly long sentence number %d that wraps around the panel width. " % i
+		sheet.add_text(text)
+		sheet.add_button("Close")
+		await wait_process_frames(4)
+		assert_lt(resizes[0], 10, "settles with %d sentences" % sentences)
+		assert_eq(sheet.panel().size.x, KitSheet.WIDTH)
+		var settled := sheet.panel().get_rect()
+		await wait_process_frames(2)
+		assert_eq(sheet.panel().get_rect(), settled)
+
+
+func test_sheet_stays_inside_its_area() -> void:
+	var sheet := _sheet()
+	var area := Rect2(0, 100, 720, 1100)
+	sheet.area_rect = area
+	for i in 100:
+		sheet.add_text("Line %d" % i)
+	await wait_process_frames(3)
+	assert_true(area.encloses(sheet.panel().get_rect()), str(sheet.panel().get_rect()))

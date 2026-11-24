@@ -11,10 +11,18 @@ const BUTTON_H := 96.0
 ## The panel is at most this share of the parent's height; longer content scrolls.
 const MAX_HEIGHT := 0.9
 
+## Where the panel may sit, in the sheet's coordinates (the device safe area); empty = the whole
+## sheet.
+var area_rect := Rect2():
+	set(value):
+		area_rect = value
+		_queue_place()
+
 var _panel: PanelContainer
 var _scroll: ScrollContainer
 var _box: VBoxContainer
 var _closed := false
+var _place_queued := false
 
 
 func _init() -> void:
@@ -36,13 +44,13 @@ func _init() -> void:
 	_box = VBoxContainer.new()
 	_box.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	_box.add_theme_constant_override("separation", 20)
-	_box.resized.connect(_place)
+	_box.minimum_size_changed.connect(_queue_place)
 	_scroll.add_child(_box)
 
 
 func _notification(what: int) -> void:
 	if what == NOTIFICATION_RESIZED or what == NOTIFICATION_ENTER_TREE:
-		_place.call_deferred()
+		_queue_place()
 
 
 func panel() -> PanelContainer:
@@ -143,12 +151,29 @@ func _new_button(text: String) -> Button:
 	return b
 
 
+## Placement runs once per frame at most, after the content has changed: placing it from inside a
+## resize (as wrapped text re-measures) can feed back into itself forever.
+func _queue_place() -> void:
+	if _place_queued:
+		return
+	_place_queued = true
+	_place.call_deferred()
+
+
 func _place() -> void:
-	var area := size
-	var width := minf(WIDTH, area.x - 32)
-	var inner := width - MARGIN * 2
-	_box.custom_minimum_size.x = inner
+	_place_queued = false
+	var area := area_rect if area_rect.has_area() else Rect2(Vector2.ZERO, size)
+	var width := minf(WIDTH, area.size.x - 32)
+	# The scroll container keeps room for its bar; the text column gets exactly what is left.
+	var reserve := _scroll.get_v_scroll_bar().get_combined_minimum_size().x
+	var inner := width - MARGIN * 2 - reserve
+	if _box.custom_minimum_size.x != inner:
+		_box.custom_minimum_size.x = inner
 	var content := _box.get_combined_minimum_size().y + MARGIN * 2
-	var height := minf(content, area.y * MAX_HEIGHT)
-	_panel.size = Vector2(width, height)
-	_panel.position = ((area - _panel.size) / 2).floor()
+	var height := minf(content, area.size.y * MAX_HEIGHT)
+	var rect := Rect2(
+		(area.position + (area.size - Vector2(width, height)) / 2).floor(), Vector2(width, height)
+	)
+	if _panel.get_rect() != rect:
+		_panel.position = rect.position
+		_panel.size = rect.size
