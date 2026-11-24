@@ -86,7 +86,7 @@ A build flag (`store = play | itch`) decides what the Support screen shows.
 
 All art is made by Claude in code; no AI image generators and no external asset files beyond CC0 fallbacks.
 
-**Locked (2026-11-24): banknote engraving, after the small chibi vignettes on the back of the Argentine peso bills** (the young animals in the bottom-left corner: the yaguareté cub on $500, the cóndor chick on $50, the taruca fawn on $100). The reference study is `tools/art/engraving-study.html` (pingüino, hornero chick, mburucuyá).
+**Locked (2026-11-24): banknote engraving, after the small chibi vignettes on the back of the Argentine peso bills** (the young animals in the bottom-left corner: the yaguareté cub on $500, the cóndor chick on $50, the taruca fawn on $100). The reference study is `tools/art/engraving-study.html` (pingüino, hornero chick, mburucuyá, at both levels of detail).
 
 Subjects:
 
@@ -97,13 +97,17 @@ Subjects:
 
 Drawing:
 
-- **One ink per game** on cream paper `#f1e6d6`; no other colours in the art.
+- **One ink per drawing** on cream paper `#f1e6d6`, no washes or tints (tested on 2026-11-24: on the cream paper they add little and lose the look). A game avoids looking monochrome by giving each subject its own ink (blue penguin, terracotta hornero, violet mburucuyá), picked from a shared portfolio set inspired by the bill colours.
 - A solid outline of about 2 units (on a ~200-unit drawing) around the silhouette.
 - **Tone is engraving, not stipple:** families of parallel lines that follow the form (curved cross-section lines), each line **swelling where the tone is dark and thinning or stopping where it is light**. Random ticks and dots look noisy when enlarged and are not used.
 - Most of the body stays bare paper; tone comes from the species' markings (the penguin's black head and chest band, the hornero's darker wing) and a little shading at the rim.
 - Pale markings (stripes, eyebrows) are **real shapes with a smooth thin outline** that the lines stop at, never just gaps in the lines.
 - A tiny face: a **plain dot eye with one highlight**, sitting in a small clean ring of paper. No ringed or anime eyes.
-- Every drawing must read at 40 px and still look deliberate when enlarged; check both sizes side by side.
+- **Two levels of detail**, drawn from the same subject definition:
+  - **full** for 56 px and up;
+  - **simple** for 40 px and below: about twice the outline width, shading lines spaced about twice as far apart (dark areas read as solid shapes), a larger eye, wider pale markings, and fine details replaced by a few bold strokes (the mburucuyá corona becomes thick spokes).
+
+  A scaled-down full drawing does not read at 40 px; a game asks for the level that fits the size it shows (Bichoku's board cells use simple). Check every subject at 200, 80, 56 and 40 px side by side.
 
 Rules:
 
@@ -260,6 +264,7 @@ The order after #2 is not fixed; quick releases can slot in between bigger ones.
 - **2026-11-22 Skills:** every project includes the vetted skills.
 - **2026-11-23 Licenses:** MIT for code, CC BY-NC 4.0 for art and sound, name and logo not licensed.
 - **2026-11-24 Art direction:** banknote engraving after the bills' chibi vignettes (see Art direction); no pixel art, no carpincho.
+- **2026-11-24 Colour and size:** one ink per drawing with no tints, each subject its own ink; a simple level of detail for 40 px and below.
 
 ## Still open
 
