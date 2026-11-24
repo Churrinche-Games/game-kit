@@ -20,7 +20,7 @@ The shared Godot addon, Claude skills and templates for Churrinche Games: a port
 ```sh
 tools/check.sh    # everything: import, GUT tests, shell tests, lint, format. Must pass before work is done.
 tools/vendor.sh   # re-copy third-party code from the pinned refs in tools/vendor.lock
-tools/sync-kit.sh <tag> ~/src/<game>   # vendor a kit tag into a game (refuses over local edits; does not commit)
+tools/sync-kit.sh [--force] <tag> ~/src/<game>   # vendor a kit tag into a game (refuses over local edits; does not commit)
 ```
 
 The pieces, if you need one alone (`GODOT` defaults to `/Applications/Godot.app/Contents/MacOS/Godot`):

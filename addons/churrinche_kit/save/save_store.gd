@@ -6,7 +6,12 @@ extends RefCounted
 ## - old saves are upgraded with `migrations` (from_version -> Callable(data) -> data for from_version + 1);
 ## - broken saves, and saves from a newer version of the game, are moved to `<path>.broken`, never deleted;
 ## - a crash while saving leaves the previous save intact (it writes `<path>.tmp`, then renames).
-## Numbers come back as float from JSON; a value whose default is an int is returned as an int.
+##
+## JSON loses types, so loaded values are converted back to the shape of `defaults`, recursively:
+## floats become ints where the default is an int (also inside arrays, using the first element or the
+## typed-array type as the template), typed-array defaults come back typed, and string keys become int
+## keys where the default dictionary has int keys. Store only JSON types (numbers, strings, bools,
+## arrays, dictionaries); Vector2, Color and other engine types come back as strings.
 
 var _path: String
 var _version: int
@@ -22,19 +27,13 @@ func _init(path: String, version: int, migrations: Dictionary = {}) -> void:
 ## Returns the saved data laid over a copy of `defaults`. Keys missing from the save come from
 ## `defaults`; keys not in `defaults` are kept.
 func load_data(defaults: Dictionary) -> Dictionary:
-	var result := defaults.duplicate(true)
 	if not FileAccess.file_exists(_path):
-		return result
+		return defaults.duplicate(true)
 	var data: Variant = _read_current_data()
 	if data == null:
 		_back_up()
-		return result
-	for key: Variant in data:
-		var value: Variant = data[key]
-		if typeof(value) == TYPE_FLOAT and typeof(defaults.get(key)) == TYPE_INT:
-			value = int(value)
-		result[key] = value
-	return result
+		return defaults.duplicate(true)
+	return _coerce_dictionary(data, defaults)
 
 
 func save_data(data: Dictionary) -> Error:
@@ -90,6 +89,52 @@ func _migrate(data: Variant, from_version: int) -> Variant:
 			return null
 		version += 1
 	return data
+
+
+static func _coerce(value: Variant, template: Variant) -> Variant:
+	match typeof(template):
+		TYPE_INT:
+			if typeof(value) == TYPE_FLOAT and value == floorf(value):
+				return int(value)
+		TYPE_ARRAY:
+			if typeof(value) == TYPE_ARRAY:
+				return _coerce_array(value, template)
+		TYPE_DICTIONARY:
+			if typeof(value) == TYPE_DICTIONARY:
+				return _coerce_dictionary(value, template)
+	return value
+
+
+static func _coerce_array(value: Array, template: Array) -> Array:
+	var element: Variant = null
+	if not template.is_empty():
+		element = template[0]
+	elif template.is_typed() and template.get_typed_builtin() == TYPE_INT:
+		element = 0
+	var out := value.map(func(item: Variant) -> Variant: return _coerce(item, element))
+	if not template.is_typed() or template.get_typed_builtin() == TYPE_OBJECT:
+		return out
+	var builtin := template.get_typed_builtin()
+	if not out.all(func(item: Variant) -> bool: return typeof(item) == builtin):
+		return out
+	return Array(out, builtin, template.get_typed_class_name(), template.get_typed_script())
+
+
+## A dictionary whose keys are all ints is a map (e.g. best score per level): every entry uses its
+## first value as the template. Otherwise it is a record: missing keys are filled from the template.
+static func _coerce_dictionary(value: Dictionary, template: Dictionary) -> Dictionary:
+	var is_map := (
+		not template.is_empty()
+		and template.keys().all(func(k: Variant) -> bool: return typeof(k) == TYPE_INT)
+	)
+	var out: Dictionary = {} if is_map else template.duplicate(true)
+	for key: Variant in value:
+		var out_key: Variant = key
+		if is_map and typeof(key) == TYPE_STRING and (key as String).is_valid_int():
+			out_key = (key as String).to_int()
+		var entry_template: Variant = template.values()[0] if is_map else template.get(out_key)
+		out[out_key] = _coerce(value[key], entry_template)
+	return out
 
 
 func _back_up() -> void:

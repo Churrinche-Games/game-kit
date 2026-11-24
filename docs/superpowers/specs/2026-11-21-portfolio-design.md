@@ -159,7 +159,7 @@ What gets shared, and how:
 
 | What | How | Why |
 |---|---|---|
-| **Kit code** (`addons/churrinche_kit`) | **Vendored copy at a kit tag**: a sync script copies the addon from a kit tag into the game and records the tag in `addons/churrinche_kit/VERSION`. Committed in the game repo. | Anyone can clone a game and open it in Godot, with no submodules or package manager. Each game stays on the kit version it shipped with and upgrades on purpose. |
+| **Kit code** (`addons/churrinche_kit`) | **Vendored copy at a kit tag**: a sync script copies the addon from a kit tag into the game and records the tag and its commit in `addons/churrinche_kit/SYNCED_FROM`. It refuses to overwrite local edits to the game's copy (committed or not) unless forced. Committed in the game repo. | Anyone can clone a game and open it in Godot, with no submodules or package manager. Each game stays on the kit version it shipped with and upgrades on purpose. |
 | **Claude skills** (`.claude/skills/`) | Copied by the same sync script. | Every project has the same skills; see below. |
 | **Setup files** (`project.godot` basics, export presets without secrets, CLAUDE.md, `.claude/settings.json`, `.gitignore`, lint config) | Created by the `new-game` skill from templates in the kit. | Written once per game. |
 | **Game logic** | Not shared. | Each game's rules are its own. |
@@ -168,7 +168,7 @@ Rules:
 
 - **Never edit `addons/churrinche_kit` inside a game.** Fix it in the kit, tag a release, sync. A check in the sync script refuses to overwrite local changes.
 - Kit releases are semver tags (`vX.Y.Z`); breaking changes bump the major. Never move or delete a tag.
-- While developing kit and game together, the sync script can copy from the kit's working tree; the committed copy is always from a tag.
+- The committed copy is always from a tag. Copying from the kit's working tree while developing kit and game together is not built yet (v0.1 syncs from tags only); add it when the first game needs it.
 - Later option: publish the kit on the Godot Asset Library. Not needed now.
 
 ### Approaches considered (code sharing)
