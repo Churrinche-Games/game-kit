@@ -2,6 +2,11 @@
 
 All releases are semver tags (`vX.Y.Z`). A breaking change bumps the major.
 
+## 0.5.0 — 2026-11-24
+
+- `sound/synth.mjs`: a deterministic synthesizer for games' sound build scripts (Node, no packages): oscillators with glides, seeded noise, plucked strings, envelopes, mixing, loop folding, normalizing and a 16-bit mono WAV writer.
+- `tests/tools/test_node.sh` runs all the Node library tests (it replaces `test_art.sh`).
+
 ## 0.4.1 — 2026-11-24
 
 - `KitSheet.add_image(texture, height)`: a centred picture.

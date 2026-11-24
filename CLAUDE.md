@@ -44,11 +44,11 @@ addons/churrinche_kit/   the runtime addon games vendor
   ui/                    KitTheme (Theme from palette slots), KitSheet (modal scrolling panel)
   i18n/                  KitLanguage (device default es/en, saved override), kit_strings.csv (KIT_* keys)
   info/                  KitGameInfo (res://game_info.cfg, store flag), KitLinks, KitPages (About, licenses, Feedback, Support)
-  sound/                 KitSound: effects + looping music, separate switches
+  sound/                 KitSound: effects + looping music, separate switches; synth.mjs for sound build scripts
   mobile/                KitMobile: safe area in canvas units, back button
   art/engraving.mjs      the engraving style as a Node library for games' art build scripts (not a Godot resource)
 addons/gut/              GUT, vendored at a pinned tag
-tests/                   GUT tests mirroring addons/churrinche_kit; tests/art/ (node --test); tests/tools/ for shell tests
+tests/                   GUT tests mirroring addons/churrinche_kit; tests/art/ and tests/sound/ (node --test); tests/tools/ for shell tests
 .claude/skills/          vetted third-party skills (vendored) + our own (OWN-SKILLS.txt); _licenses/
 templates/game/          the game template new-game.sh copies ({{NAME}}, {{SLUG}}, {{PACKAGE}}, {{KIT_TAG}}, {{DATE}})
 tools/                   check.sh, vendor.sh + vendor.lock, sync-kit.sh, new-game.sh, art/ (style reference)
