@@ -23,3 +23,12 @@ func test_theme_missing_slot_errors() -> void:
 	var t := KitTheme.make({"paper": Color.WHITE})
 	assert_push_error_count(3)
 	assert_not_null(t)
+
+
+func test_switches_stay_readable_when_on() -> void:
+	var t := KitTheme.make(PALETTE)
+	for style in ["normal", "pressed", "hover", "hover_pressed"]:
+		var box: StyleBoxFlat = t.get_stylebox(style, "CheckButton")
+		assert_eq(box.bg_color, PALETTE.paper, style)
+	for c in ["font_color", "font_pressed_color", "font_hover_pressed_color"]:
+		assert_eq(t.get_color(c, "CheckButton"), PALETTE.line, c)

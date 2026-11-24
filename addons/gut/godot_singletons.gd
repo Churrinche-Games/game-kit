@@ -1,4 +1,3 @@
-
 # This file is auto-generated as part of the release process.  GUT maintainers
 # should not change this file manually.
 static var class_ref = [
@@ -45,6 +44,8 @@ static var class_ref = [
 	XRServer
 ]
 static var names := []
+
+
 static func _static_init():
 	for entry in class_ref:
 		names.append(entry.get_class())

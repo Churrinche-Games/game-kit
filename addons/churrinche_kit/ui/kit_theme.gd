@@ -42,11 +42,11 @@ static func make(palette: Dictionary) -> Theme:
 	t.set_color("font_hover_pressed_color", "Button", paper)
 	t.set_color("font_disabled_color", "Button", Color(line, 0.4))
 	t.set_color("font_color", "Label", line)
-	for kind in ["CheckButton"]:
-		for c in [
-			"font_color", "font_hover_color", "font_pressed_color", "font_hover_pressed_color"
-		]:
-			t.set_color(c, kind, line)
+	# A switch shows its state with its toggle icon; its box never fills, so the label stays readable.
+	for style in ["normal", "pressed", "hover", "hover_pressed", "focus", "disabled"]:
+		t.set_stylebox(style, "CheckButton", normal)
+	for c in ["font_color", "font_hover_color", "font_pressed_color", "font_hover_pressed_color"]:
+		t.set_color(c, "CheckButton", line)
 	var panel := StyleBoxFlat.new()
 	panel.bg_color = paper
 	panel.set_corner_radius_all(24)

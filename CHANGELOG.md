@@ -2,6 +2,10 @@
 
 All releases are semver tags (`vX.Y.Z`). A breaking change bumps the major.
 
+## 0.3.1 — 2026-11-24
+
+- `KitTheme`: switches (CheckButton) keep a paper box when on; they used to take the dark pressed fill and hide their label.
+
 ## 0.3.0 — 2026-11-24
 
 - `KitTheme.make(palette)`: the shared Theme from the palette slots `paper`, `line`, `accent`, `error`.
