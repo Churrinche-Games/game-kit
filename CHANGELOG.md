@@ -2,6 +2,16 @@
 
 All releases are semver tags (`vX.Y.Z`). A breaking change bumps the major.
 
+## 0.3.0 — 2026-11-24
+
+- `KitTheme.make(palette)`: the shared Theme from the palette slots `paper`, `line`, `accent`, `error`.
+- `KitSheet`: a modal, scrolling panel with titles, text, switches, buttons, actions, links and one-of choices.
+- `KitLanguage`: Spanish when the device is in Spanish, otherwise English; a saved choice overrides it. Shared strings in `i18n/kit_strings.csv` (es/en; games register the two translations).
+- `KitGameInfo` (reads the game's `res://game_info.cfg`), `KitLinks`, and `KitPages`: About (version, source link, licenses, Godot credit), third-party licenses, Feedback (email with the game and version in the subject, GitHub issues), Support (donation links, only in builds with the `itch` feature). Missing email, repo or links hide their entries.
+- `KitSound`: effects and a looping music track with separate on/off switches (music off by default).
+- `KitMobile`: the safe area in canvas units, and the back-button notification.
+- Template: `game_info.cfg` (exported via `include_filter`), Android preset with the `play` feature and Web with `itch`, the kit strings registered, `quit_on_go_back=false`.
+
 ## 0.2.0 — 2026-11-24
 
 - `tools/new-game.sh` and `templates/game/`: create a game repo (`~/src/<slug>`) from the newest kit tag, with the harness, the kit, GUT, the skills, Android and Web export presets that leave tests and GUT out, and one local commit. The default Android package is `com.churrinche.<slug without hyphens>`.
