@@ -1,0 +1,23 @@
+keys,es,en
+KIT_CLOSE,Cerrar,Close
+KIT_CANCEL,Cancelar,Cancel
+KIT_LANGUAGE,Idioma,Language
+KIT_MUSIC,Música,Music
+KIT_EFFECTS,Efectos de sonido,Sound effects
+KIT_ABOUT,Acerca de,About
+KIT_VERSION,Versión %s,Version %s
+KIT_BY,Un juego de Churrinche Games,A Churrinche Games game
+KIT_SOURCE,Código fuente en GitHub,Source code on GitHub
+KIT_LICENSE_TEXT,"El código es libre (licencia MIT). El arte y el sonido son CC BY-NC 4.0: podés compartirlos dando crédito, sin fines comerciales. El nombre y el logo no están licenciados.","The code is free software (MIT license). The art and sound are CC BY-NC 4.0: share them with credit, not commercially. The name and logo are not licensed."
+KIT_MADE_WITH,Hecho con Godot Engine,Made with Godot Engine
+KIT_LICENSES,Licencias de terceros,Third-party licenses
+KIT_FEEDBACK,Comentarios,Feedback
+KIT_FEEDBACK_TEXT,"Contanos qué te gustó, qué no, o si encontraste un error.","Tell us what you liked, what you didn't, or a bug you found."
+KIT_FEEDBACK_EMAIL,Escribir un email,Send an email
+KIT_FEEDBACK_ISSUES,Abrir un issue en GitHub,Open an issue on GitHub
+KIT_FEEDBACK_SUBJECT,Comentarios sobre %s v%s,Feedback on %s v%s
+KIT_SUPPORT,Apoyar,Support
+KIT_SUPPORT_TEXT,"%s es gratis y de código abierto. Si te gusta, podés apoyarlo con una donación:","%s is free and open source. If you enjoy it, you can support it with a donation:"
+KIT_LEAVE_TITLE,¿Salir de %s?,Leave %s?
+KIT_LEAVE_TEXT,Tu partida queda guardada.,Your game is saved.
+KIT_LEAVE_YES,Salir,Leave

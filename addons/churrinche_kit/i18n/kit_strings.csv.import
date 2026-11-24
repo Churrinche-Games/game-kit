@@ -1,0 +1,19 @@
+[remap]
+
+importer="csv_translation"
+type="Translation"
+uid="uid://e5ryw7rci254"
+
+[deps]
+
+files=["res://addons/churrinche_kit/i18n/kit_strings.es.translation", "res://addons/churrinche_kit/i18n/kit_strings.en.translation"]
+
+source_file="res://addons/churrinche_kit/i18n/kit_strings.csv"
+dest_files=["res://addons/churrinche_kit/i18n/kit_strings.es.translation", "res://addons/churrinche_kit/i18n/kit_strings.en.translation"]
+
+[params]
+
+compress=1
+delimiter=0
+unescape_keys=false
+unescape_translations=true
