@@ -1,0 +1,116 @@
+<!doctype html>
+<html lang="es"><head><meta charset="utf-8">
+<style>
+body{margin:0}
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;max-width:680px}
+@media(max-width:560px){.grid{grid-template-columns:1fr}}
+.card{background:#f1e6d6;border-radius:10px;padding:8px}
+.cap{font:13px var(--font-sans,system-ui);color:#4a3b2e;margin-top:4px;text-align:center}
+svg{width:100%;height:auto;display:block}
+.small{display:flex;gap:12px;align-items:flex-end;justify-content:center;margin-top:4px}
+.small svg{width:auto}
+</style></head><body>
+<div class="grid" id="grid"></div>
+<script>
+const NS='http://www.w3.org/2000/svg',PAPER='#f1e6d6';
+const el=(t,a={},p)=>{const e=document.createElementNS(NS,t);for(const k in a)e.setAttribute(k,a[k]);if(p)p.appendChild(e);return e;};
+const cx2=document.createElement('canvas').getContext('2d');
+const inside=(p,x,y)=>cx2.isPointInPath(p,x,y);
+const clamp=(v,a=0,b=1)=>Math.max(a,Math.min(b,v));
+const ell=(x,y,cx,cy,rx,ry)=>Math.hypot((x-cx)/rx,(y-cy)/ry);
+const line=(g,d,ink,w=1.6)=>el('path',{d,stroke:ink,'stroke-width':w,fill:'none','stroke-linecap':'round','stroke-linejoin':'round'},g);
+// Engraving: a family of parallel lines that follow the form; each line swells where the tone is dark.
+function engrave(g,P,ink,T,fam){
+  const runs=[];let run=[];
+  const push=(x,y,nx,ny)=>{const w=inside(P,x,y)?fam.sp*0.92*T(x,y):0;
+    if(w>0.22)run.push([x,y,w,nx,ny]);else{if(run.length>1)runs.push(run);run=[];}};
+  const flush=()=>{if(run.length>1)runs.push(run);run=[];};
+  if(fam.circles){const[ox,oy]=fam.circles;
+    for(let r=fam.r0;r<=fam.r1;r+=fam.sp){for(let a=fam.a0;a<=fam.a1;a+=0.7/r)push(ox+Math.cos(a)*r,oy+Math.sin(a)*r,Math.cos(a),Math.sin(a));flush();}}
+  if(fam.rays){const[ox,oy]=fam.rays;
+    for(let k=0;k<fam.n;k++){const a=k/fam.n*Math.PI*2;for(let r=fam.r0;r<=fam.r1;r+=0.7)push(ox+Math.cos(a)*r,oy+Math.sin(a)*r,-Math.sin(a),Math.cos(a));flush();}}
+  let d='';for(const s of runs){const L=[],R=[];
+    for(const[x,y,w,nx,ny]of s){L.push((x+nx*w/2).toFixed(2)+','+(y+ny*w/2).toFixed(2));R.push((x-nx*w/2).toFixed(2)+','+(y-ny*w/2).toFixed(2));}
+    d+='M'+L.join('L')+'L'+R.reverse().join('L')+'Z';}
+  el('path',{d,fill:ink},g);
+}
+function band(cx,cy,rx,ry,a0,a1,w){const L=[],R=[];
+  for(let i=0;i<=48;i++){const t=i/48,a=a0+(a1-a0)*t,hw=w/2*Math.pow(Math.sin(Math.PI*t),0.6)+0.4,c=Math.cos(a),sn=Math.sin(a);
+    L.push((cx+c*(rx+hw)).toFixed(2)+','+(cy+sn*(ry+hw)).toFixed(2));R.push((cx+c*(rx-hw)).toFixed(2)+','+(cy+sn*(ry-hw)).toFixed(2));}
+  return 'M'+L.join('L')+'L'+R.reverse().join('L')+'Z';}
+const ground=(g,ink)=>{line(g,'M24,206 C80,210 140,210 196,206',ink,1.2);
+  let d='';for(let i=0;i<26;i++){const x=30+i*6.4+((i*37)%5),h=5+((i*53)%9);d+=`M${x},207 q${(i%2?1:-1)*2},${-h/2} ${(i%3)-1},${-h}`;}line(g,d,ink,1);};
+
+const S={};
+S.pinguino={name:'Pingüino de Magallanes',ink:'#2f4a5c',draw(g,ink,bg){
+  const STRIPE=band(118,80,22,20,-Math.PI/3,-Math.PI/3-Math.PI*4/3,7.5),SP=new Path2D(STRIPE);
+  const sil='M98,30 C126,30 140,50 142,72 L162,80 L142,88 C150,110 156,140 152,170 C150,190 132,200 100,200 C66,200 48,188 48,164 C48,130 56,104 62,84 C60,54 72,30 98,30 Z',P=new Path2D(sil);
+  if(bg)ground(g,ink);
+  el('path',{d:sil,fill:PAPER},g);
+  engrave(g,P,ink,(x,y)=>{
+    if(Math.hypot(x-122,y-73)<8)return 0;
+    if(inside(SP,x,y))return 0;                                                    // white face stripe
+    if(y<96)return 0.9;                                                            // black head
+    if(x<74-0.05*(y-100))return 0.85;                                              // black back and flipper
+    if(Math.abs(y-(126-0.3*(x-108)))<5.5)return 0.95;                              // chest band
+    const f=clamp(ell(x,y,104,150,52,54));return 0.04+0.6*f**3;                    // white belly, shaded at the rim
+  },{circles:[104,-150],r0:170,r1:360,a0:Math.PI/2-0.6,a1:Math.PI/2+0.6,sp:2.6});
+  el('path',{d:STRIPE,fill:PAPER,stroke:ink,'stroke-width':1.1,'stroke-linejoin':'round'},g);
+  el('circle',{cx:122,cy:73,r:7.2,fill:PAPER},g);
+  el('path',{d:sil,fill:'none',stroke:ink,'stroke-width':2,'stroke-linejoin':'round'},g);
+  el('ellipse',{cx:122,cy:73,rx:4.2,ry:4.8,fill:ink},g);el('circle',{cx:123.4,cy:71.5,r:1.4,fill:PAPER},g);
+  el('path',{d:'M142,72 L162,80 L142,88 Z',fill:PAPER,stroke:ink,'stroke-width':1.6,'stroke-linejoin':'round'},g);line(g,'M144,80 L157,80',ink,1.1);
+  el('ellipse',{cx:86,cy:202,rx:10,ry:4,fill:PAPER,stroke:ink,'stroke-width':1.6},g);el('ellipse',{cx:116,cy:202,rx:10,ry:4,fill:PAPER,stroke:ink,'stroke-width':1.6},g);
+}};
+S.hornero={name:'Hornero (pichón)',ink:'#b5532a',draw(g,ink,bg){
+  const BROW=band(128,118,36,44,-Math.PI*0.86,-Math.PI*0.28,5),BP=new Path2D(BROW);
+  const sil='M100,40 C136,40 158,64 160,96 L184,103 L160,112 C158,152 136,192 100,192 C72,192 54,178 46,158 L22,168 L38,146 C36,138 36,130 38,122 C44,72 66,40 100,40 Z',P=new Path2D(sil);
+  if(bg)ground(g,ink);
+  el('path',{d:sil,fill:PAPER},g);
+  engrave(g,P,ink,(x,y)=>{
+    if(Math.hypot(x-130,y-86)<8)return 0;
+    if(inside(BP,x,y))return 0;                                                    // pale eyebrow
+    if(ell(x,y,142,124,17,24)<1)return 0.05;                                       // pale throat
+    if(x<48)return 0.75;                                                           // tail
+    const f=clamp(ell(x,y,100,116,62,78));
+    let t=0.2+0.55*f**3+(x<100?0.15*f*f:0);
+    if(ell(x,y,84,140,36,30)<1)t+=0.25;                                            // wing a shade darker
+    return t;
+  },{circles:[100,-160],r0:190,r1:360,a0:Math.PI/2-0.7,a1:Math.PI/2+0.7,sp:2.6});
+  el('path',{d:sil,fill:'none',stroke:ink,'stroke-width':2,'stroke-linejoin':'round'},g);
+  el('path',{d:BROW,fill:PAPER,stroke:ink,'stroke-width':1,'stroke-linejoin':'round'},g);
+  el('circle',{cx:130,cy:86,r:7.6,fill:PAPER},g);
+  line(g,'M54,114 C62,150 92,172 124,164',ink,1.4);
+  line(g,'M160,104 L176,104',ink,1.3);
+  el('ellipse',{cx:130,cy:86,rx:5,ry:5.6,fill:ink},g);el('circle',{cx:131.6,cy:84,r:1.5,fill:PAPER},g);
+  line(g,'M94,190 L92,204 M86,206 L98,204 M114,188 L116,204 M110,206 L122,204',ink,1.8);
+}};
+S.mburucuya={name:'Mburucuyá',ink:'#5b3f8c',draw(g,ink){
+  const C=[110,110];
+  const petal=(a,len,wid,r0)=>{const pts=[];for(let i=0;i<=28;i++){const t=i/28*Math.PI*2,lx=r0+len/2+Math.cos(t)*len/2,ly=Math.sin(t)*wid/2*(0.6+0.4*Math.cos(t));
+      pts.push([C[0]+lx*Math.cos(a)-ly*Math.sin(a),C[1]+lx*Math.sin(a)+ly*Math.cos(a)]);}
+    return 'M'+pts.map(p=>p[0].toFixed(1)+','+p[1].toFixed(1)).join('L')+'Z';};
+  const angs=[...Array(10)].map((_,k)=>k*Math.PI/5+(k%2?0.31:0)-Math.PI/2);
+  angs.forEach(a=>{const d=petal(a,72,30,10),P=new Path2D(d);el('path',{d,fill:PAPER},g);
+    engrave(g,P,ink,(x,y)=>{const r=Math.hypot(x-C[0],y-C[1]);const s=Math.sin(Math.atan2(y-C[1],x-C[0])-a);return clamp(0.95-r/110+(s>0.15?0.25:0));},
+      {circles:C,r0:12,r1:84,a0:a-0.5,a1:a+0.5,sp:2.4});
+    el('path',{d,fill:'none',stroke:ink,'stroke-width':1.5,'stroke-linejoin':'round'},g);});
+  el('circle',{cx:C[0],cy:C[1],r:46,fill:PAPER,opacity:0.6},g);
+  let cor='';for(let i=0;i<84;i++){const a=i/84*Math.PI*2;let p='';
+    for(let r=15;r<=46;r+=2){const aa=a+Math.sin(r/4+i)*0.04;p+=(p?'L':'M')+(C[0]+Math.cos(aa)*r).toFixed(1)+','+(C[1]+Math.sin(aa)*r).toFixed(1);}cor+=p;}
+  el('path',{d:cor,stroke:ink,'stroke-width':0.9,fill:'none','stroke-dasharray':'9 3 5 3 14','stroke-linecap':'round'},g);
+  el('circle',{cx:C[0],cy:C[1],r:13,fill:PAPER,stroke:ink,'stroke-width':1.4},g);
+  for(let k=0;k<5;k++){const a=k*Math.PI*2/5-Math.PI/2,x=C[0]+Math.cos(a)*17,y=C[1]+Math.sin(a)*17;
+    line(g,`M${C[0]},${C[1]} L${x.toFixed(1)},${y.toFixed(1)}`,ink,1.4);
+    el('ellipse',{cx:x,cy:y,rx:5,ry:2.4,transform:`rotate(${(a*180/Math.PI+90).toFixed(0)} ${x.toFixed(1)} ${y.toFixed(1)})`,fill:ink},g);}
+  for(let k=0;k<3;k++){const a=k*Math.PI*2/3-Math.PI/2+0.6,x=C[0]+Math.cos(a)*9,y=C[1]+Math.sin(a)*9;line(g,`M${C[0]},${C[1]} L${x.toFixed(1)},${y.toFixed(1)}`,ink,1.6);el('circle',{cx:x,cy:y,r:2.2,fill:PAPER,stroke:ink,'stroke-width':1.2},g);}
+}};
+const G=document.getElementById('grid');
+['pinguino','hornero','mburucuya'].forEach(k=>{
+  const s=S[k],c=document.createElement('div');c.className='card';G.appendChild(c);
+  s.draw(el('g',{},el('svg',{viewBox:'10 20 200 196'},c)),s.ink,true);
+  const sm=document.createElement('div');sm.className='small';c.appendChild(sm);
+  [64,40].forEach(px=>{const v=el('svg',{viewBox:'10 20 200 196',width:px,height:px},sm);s.draw(el('g',{},v),s.ink,false);});
+  const cap=document.createElement('div');cap.className='cap';cap.textContent=s.name;c.appendChild(cap);
+});
+</script></body></html>
