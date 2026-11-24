@@ -2,3 +2,18 @@
 # <github repo> <commit or tag> <path in that repo> <destination here>
 # Run tools/vendor.sh after editing. List every item in THIRD_PARTY.md.
 bitwes/Gut v9.7.1 addons/gut addons/gut
+
+# Skills, read in full and vetted on 2026-11-21
+jame581/GodotPrompter 426e8ab597473d1c71a11a04f6f0f2e1182a8e39 skills/gdscript-patterns .claude/skills/gdscript-patterns
+jame581/GodotPrompter 426e8ab597473d1c71a11a04f6f0f2e1182a8e39 skills/godot-testing .claude/skills/godot-testing
+jame581/GodotPrompter 426e8ab597473d1c71a11a04f6f0f2e1182a8e39 skills/mobile-development .claude/skills/mobile-development
+jame581/GodotPrompter 426e8ab597473d1c71a11a04f6f0f2e1182a8e39 skills/export-pipeline .claude/skills/export-pipeline
+jame581/GodotPrompter 426e8ab597473d1c71a11a04f6f0f2e1182a8e39 skills/localization .claude/skills/localization
+jame581/GodotPrompter 426e8ab597473d1c71a11a04f6f0f2e1182a8e39 skills/responsive-ui .claude/skills/responsive-ui
+jame581/GodotPrompter 426e8ab597473d1c71a11a04f6f0f2e1182a8e39 skills/audio-system .claude/skills/audio-system
+jame581/GodotPrompter 426e8ab597473d1c71a11a04f6f0f2e1182a8e39 LICENSE .claude/skills/_licenses/GodotPrompter-LICENSE
+gamedev-skills/awesome-gamedev-agent-skills c6ca6c41c839b68319ffc08430b99ab768debc32 skills/godot/godot-gdscript-headless-testing .claude/skills/godot-gdscript-headless-testing
+gamedev-skills/awesome-gamedev-agent-skills c6ca6c41c839b68319ffc08430b99ab768debc32 skills/genres/puzzle .claude/skills/puzzle
+gamedev-skills/awesome-gamedev-agent-skills c6ca6c41c839b68319ffc08430b99ab768debc32 skills/disciplines/game-feel .claude/skills/game-feel
+gamedev-skills/awesome-gamedev-agent-skills c6ca6c41c839b68319ffc08430b99ab768debc32 LICENSE .claude/skills/_licenses/awesome-gamedev-agent-skills-LICENSE
+gamedev-skills/awesome-gamedev-agent-skills c6ca6c41c839b68319ffc08430b99ab768debc32 NOTICE .claude/skills/_licenses/awesome-gamedev-agent-skills-NOTICE
