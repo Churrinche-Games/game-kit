@@ -109,3 +109,13 @@ func test_sheet_stays_inside_its_area() -> void:
 		sheet.add_text("Line %d" % i)
 	await wait_process_frames(3)
 	assert_true(area.encloses(sheet.panel().get_rect()), str(sheet.panel().get_rect()))
+
+
+func test_image_is_centred_at_its_height() -> void:
+	var sheet := _sheet()
+	var tex := PlaceholderTexture2D.new()
+	tex.size = Vector2(200, 100)
+	var image := sheet.add_image(tex, 150.0)
+	assert_eq(image.texture, tex)
+	assert_eq(image.custom_minimum_size.y, 150.0)
+	assert_eq(image.stretch_mode, TextureRect.STRETCH_KEEP_ASPECT_CENTERED)

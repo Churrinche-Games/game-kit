@@ -2,6 +2,10 @@
 
 All releases are semver tags (`vX.Y.Z`). A breaking change bumps the major.
 
+## 0.4.1 — 2026-11-24
+
+- `KitSheet.add_image(texture, height)`: a centred picture.
+
 ## 0.4.0 — 2026-11-24
 
 - `art/engraving.mjs`: the engraving style as a Node library (no packages) for games' art build scripts: path parsing (M L C Q Z, absolute and relative) and an inside test, `Drawing` with `engrave` (form-following lines whose width follows a tone), `band` markings, outline, eye, strokes, and the FULL and SIMPLE levels; `toSvg()` is reproducible. Tested with `node --test` (`tests/tools/test_art.sh`).

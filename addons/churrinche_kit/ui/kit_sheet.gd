@@ -72,6 +72,18 @@ func add_text(text: String) -> Label:
 	return label
 
 
+## A picture, scaled to that height and centred.
+func add_image(texture: Texture2D, height: float) -> TextureRect:
+	var image := TextureRect.new()
+	image.texture = texture
+	image.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+	image.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+	image.custom_minimum_size = Vector2(0, height)
+	image.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	_box.add_child(image)
+	return image
+
+
 func add_check(text: String, value: bool, on_toggle: Callable) -> CheckButton:
 	var check := CheckButton.new()
 	check.text = text
