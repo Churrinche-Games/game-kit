@@ -13,3 +13,6 @@ CLAUDE.local.md
 
 # Godot
 .godot/
+
+# Generated output (renders, style references)
+build/

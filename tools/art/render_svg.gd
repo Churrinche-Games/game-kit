@@ -1,5 +1,5 @@
 extends SceneTree
-## Rasterizes an SVG to an opaque square PNG of the given size (no window needed):
+## Rasterizes an SVG to an opaque PNG of the given width, on paper (no window needed):
 ##   godot --headless --path . -s tools/art/render_svg.gd -- <in.svg> <out.png> <size>
 
 
@@ -21,6 +21,12 @@ func _initialize() -> void:
 		printerr("could not read ", src)
 		quit(1)
 		return
+	# Transparent parts become paper, the style's background.
+	image.convert(Image.FORMAT_RGBA8)
+	var paper := Image.create_empty(image.get_width(), image.get_height(), false, Image.FORMAT_RGBA8)
+	paper.fill(Color("#f1e6d6"))
+	paper.blend_rect(image, Rect2i(Vector2i.ZERO, image.get_size()), Vector2i.ZERO)
+	image = paper
 	image.convert(Image.FORMAT_RGB8)
 	DirAccess.make_dir_recursive_absolute(dst.get_base_dir())
 	image.save_png(dst)

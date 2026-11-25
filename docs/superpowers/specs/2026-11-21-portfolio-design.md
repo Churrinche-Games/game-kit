@@ -114,7 +114,7 @@ Rules:
 - **Inspiration only.** Never reproduce a real bill, its layout, denominations, portraits, BCRA marks or security features.
 - Source files (scripts, SVG) are committed; generated files are rebuilt by a script, so the art is reproducible and open.
 - Never imitate existing characters or brands.
-- The churrinche itself is the logo.
+- The churrinche itself is the logo. **Locked 2026-11-25:** a round male churrinche on a rising twig, one brick-red ink (`tools/art/studio-logo.mjs`, `docs/brand/churrinche-500.png`). Juan picked the composition from a generated sketch (a round ball body, a smaller head, the dark mask in straight lines, a folded wing with pale scallops, a fanned tail, two-toed feet); it is redrawn in code, so the art-in-code rule holds. Not liked along the way: a lump or spikes on the crown, a bare (bald-looking) crown, a neck notch, legs crossing the feet.
 - Not chosen: a pixel art version of the style.
 
 ## Sound
