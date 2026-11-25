@@ -54,10 +54,21 @@ func test_switch_icons_fit_the_text_size() -> void:
 	assert_gt(on.get_width(), on.get_height())
 	assert_eq(on.get_size(), off.get_size())
 	# On is filled with the line colour at the knob's opposite end; off is paper there.
-	var y := on.get_height() / 2
-	assert_true(on.get_image().get_pixel(on.get_width() / 4, y).is_equal_approx(PALETTE.line))
-	assert_true(
-		off.get_image().get_pixel(off.get_width() * 3 / 4, y).is_equal_approx(PALETTE.paper)
-	)
+	var on_image := on.get_image()
+	var off_image := off.get_image()
+	var y := on_image.get_height() / 2
+	var w := on_image.get_width()
+	assert_true(on_image.get_pixel(w / 4, y).is_equal_approx(PALETTE.line))
+	assert_true(off_image.get_pixel(w * 3 / 4, y).is_equal_approx(PALETTE.paper))
 	for name in ["checked_disabled", "unchecked_disabled"]:
 		assert_not_null(t.get_icon(name, "CheckButton"), name)
+
+
+func test_switch_icons_stay_sharp_when_scaled_up() -> void:
+	# Phones show the 720-wide canvas 1.5x larger and more; the icon is drawn at twice its size.
+	var on := KitTheme.make(PALETTE).get_icon("checked", "CheckButton")
+	assert_eq(on.get_image().get_width(), on.get_width() * 2)
+
+
+func test_long_labels_keep_off_the_switch() -> void:
+	assert_gte(KitTheme.make(PALETTE).get_constant("h_separation", "CheckButton"), 16)

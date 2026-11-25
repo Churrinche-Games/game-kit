@@ -2,6 +2,10 @@
 
 All releases are semver tags (`vX.Y.Z`). A breaking change bumps the major.
 
+## 0.5.2 — 2026-11-24
+
+- `KitTheme`: the switch icons are drawn at twice their size (sharp on phones, where the canvas is scaled up); a 16 px gap between a switch's label and its toggle.
+
 ## 0.5.1 — 2026-11-24
 
 - `KitTheme`: buttons keep their text 16 px off the border; switches get drawn toggle icons sized for the 30 px text (`KitTheme.switch_icon`), instead of Godot's 16 px ones.
