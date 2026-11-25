@@ -1,6 +1,7 @@
 class_name KitSound
 extends Node
-## Sound effects (a few players taking turns, so quick effects overlap) and one looping music
+## Sound effects (a few players, so quick effects overlap; a new effect takes a free player, or the
+## one whose sound ends first, so a long fanfare isn't cut by quick effects) and one looping music
 ## track, each with its own on/off switch. The game saves the switches.
 
 signal played(name: StringName)
@@ -8,6 +9,8 @@ signal played(name: StringName)
 const EFFECT_PLAYERS := 4
 
 var effects_on := true
+## Seconds, for choosing a free player (tests replace it).
+var clock: Callable = func() -> float: return Time.get_ticks_msec() / 1000.0
 var music_on := false:
 	set(value):
 		music_on = value
@@ -15,7 +18,8 @@ var music_on := false:
 
 var _effects := {}
 var _players: Array[AudioStreamPlayer] = []
-var _next := 0
+## When each player's current sound ends, in clock seconds.
+var _ends: Array[float] = []
 var _music: AudioStreamPlayer
 var _music_started := false
 
@@ -24,6 +28,7 @@ func _init() -> void:
 	for i in EFFECT_PLAYERS:
 		var player := AudioStreamPlayer.new()
 		_players.append(player)
+		_ends.append(0.0)
 		add_child(player)
 	_music = AudioStreamPlayer.new()
 	add_child(_music)
@@ -36,9 +41,15 @@ func add_effect(effect: StringName, stream: AudioStream) -> void:
 func play(effect: StringName) -> void:
 	if not effects_on or not _effects.has(effect):
 		return
-	var player := _players[_next]
-	_next = (_next + 1) % EFFECT_PLAYERS
-	player.stream = _effects[effect]
+	var now: float = clock.call()
+	var pick := 0
+	for i in EFFECT_PLAYERS:
+		if _ends[i] < _ends[pick]:
+			pick = i
+	var player := _players[pick]
+	var stream: AudioStream = _effects[effect]
+	_ends[pick] = now + stream.get_length()
+	player.stream = stream
 	if player.is_inside_tree():
 		player.play()
 	played.emit(effect)

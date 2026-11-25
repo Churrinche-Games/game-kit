@@ -2,6 +2,11 @@
 
 All releases are semver tags (`vX.Y.Z`). A breaking change bumps the major.
 
+## 0.5.3 — 2026-11-25
+
+- `KitSound`: an effect takes a free player, or the one whose sound ends first, instead of the next in turn, so a long effect (a win fanfare) is no longer cut off by quick ones. `clock` can be replaced in tests.
+- Tests: the WAV helper made empty streams (packed arrays are copied on read); fixed.
+
 ## 0.5.2 — 2026-11-24
 
 - `KitTheme`: the switch icons are drawn at twice their size (sharp on phones, where the canvas is scaled up); a 16 px gap between a switch's label and its toggle.
