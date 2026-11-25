@@ -2,6 +2,10 @@
 
 All releases are semver tags (`vX.Y.Z`). A breaking change bumps the major.
 
+## 0.5.1 — 2026-11-24
+
+- `KitTheme`: buttons keep their text 16 px off the border; switches get drawn toggle icons sized for the 30 px text (`KitTheme.switch_icon`), instead of Godot's 16 px ones.
+
 ## 0.5.0 — 2026-11-24
 
 - `sound/synth.mjs`: a deterministic synthesizer for games' sound build scripts (Node, no packages): oscillators with glides, seeded noise, plucked strings, envelopes, mixing, loop folding, normalizing and a 16-bit mono WAV writer.

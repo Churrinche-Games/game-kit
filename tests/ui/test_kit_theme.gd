@@ -32,3 +32,32 @@ func test_switches_stay_readable_when_on() -> void:
 		assert_eq(box.bg_color, PALETTE.paper, style)
 	for c in ["font_color", "font_pressed_color", "font_hover_pressed_color"]:
 		assert_eq(t.get_color(c, "CheckButton"), PALETTE.line, c)
+
+
+func test_button_text_keeps_off_the_border() -> void:
+	var t := KitTheme.make(PALETTE)
+	for type in ["Button", "CheckButton"]:
+		for style in ["normal", "pressed"]:
+			var box: StyleBoxFlat = t.get_stylebox(style, type)
+			assert_gte(box.content_margin_left, 12.0, "%s %s" % [type, style])
+			assert_gte(box.content_margin_right, 12.0, "%s %s" % [type, style])
+
+
+func test_switch_icons_fit_the_text_size() -> void:
+	var t := KitTheme.make(PALETTE)
+	var on := t.get_icon("checked", "CheckButton")
+	var off := t.get_icon("unchecked", "CheckButton")
+	assert_not_null(on)
+	assert_not_null(off)
+	# Sized for the 30 px text, a pill wider than it is tall.
+	assert_gte(on.get_height(), 30)
+	assert_gt(on.get_width(), on.get_height())
+	assert_eq(on.get_size(), off.get_size())
+	# On is filled with the line colour at the knob's opposite end; off is paper there.
+	var y := on.get_height() / 2
+	assert_true(on.get_image().get_pixel(on.get_width() / 4, y).is_equal_approx(PALETTE.line))
+	assert_true(
+		off.get_image().get_pixel(off.get_width() * 3 / 4, y).is_equal_approx(PALETTE.paper)
+	)
+	for name in ["checked_disabled", "unchecked_disabled"]:
+		assert_not_null(t.get_icon(name, "CheckButton"), name)
