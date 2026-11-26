@@ -90,6 +90,8 @@ func add_check(text: String, value: bool, on_toggle: Callable) -> CheckButton:
 	check.button_pressed = value
 	check.focus_mode = Control.FOCUS_NONE
 	check.custom_minimum_size = Vector2(0, BUTTON_H)
+	# Long labels (longer in some languages) wrap instead of widening the panel off screen.
+	check.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	check.toggled.connect(on_toggle)
 	_box.add_child(check)
 	return check
@@ -160,6 +162,7 @@ func _new_button(text: String) -> Button:
 	b.text = text
 	b.focus_mode = Control.FOCUS_NONE
 	b.custom_minimum_size = Vector2(0, BUTTON_H)
+	b.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	return b
 
 

@@ -119,3 +119,14 @@ func test_image_is_centred_at_its_height() -> void:
 	assert_eq(image.texture, tex)
 	assert_eq(image.custom_minimum_size.y, 150.0)
 	assert_eq(image.stretch_mode, TextureRect.STRETCH_KEEP_ASPECT_CENTERED)
+
+
+func test_long_rows_wrap_inside_the_panel() -> void:
+	var sheet := _sheet()
+	var long := "A switch whose label is much longer than the panel is wide, in any language"
+	sheet.add_check(long, true, func(_on: bool) -> void: pass)
+	sheet.add_button(long)
+	await wait_process_frames(3)
+	var panel := sheet.panel().get_rect()
+	assert_eq(panel.size.x, KitSheet.WIDTH)
+	assert_eq(panel.position.x, (720 - KitSheet.WIDTH) / 2)

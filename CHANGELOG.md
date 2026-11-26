@@ -2,6 +2,10 @@
 
 All releases are semver tags (`vX.Y.Z`). A breaking change bumps the major.
 
+## 0.5.4 — 2026-11-26
+
+- `KitSheet`: switch and button labels wrap onto more lines instead of widening the panel past its width (a long Spanish setting pushed it off the right edge of a phone).
+
 ## 0.5.3 — 2026-11-25
 
 - `KitSound`: an effect takes a free player, or the one whose sound ends first, instead of the next in turn, so a long effect (a win fanfare) is no longer cut off by quick ones. `clock` can be replaced in tests.
